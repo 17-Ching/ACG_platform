@@ -12,10 +12,10 @@ defineProps({
     </div>
 
     <dl class="grid grid-cols-[6rem_1fr] gap-x-2 px-3 py-2">
-      <dt class="text-bbs-dim">註冊日</dt>
+      <dt class="text-bbs-dim">註冊日期</dt>
       <dd>{{ profile.registeredAt }}</dd>
-      <dt class="text-bbs-dim">發文數</dt>
-      <dd>{{ profile.postCount }} 篇</dd>
+      <dt class="text-bbs-dim">發文總數</dt>
+      <dd>{{ profile.postCount }}</dd>
       <dt class="text-bbs-dim">生日</dt>
       <dd>{{ profile.birthday }}</dd>
       <dt class="text-bbs-dim">最後上線</dt>

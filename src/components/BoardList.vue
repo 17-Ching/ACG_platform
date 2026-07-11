@@ -1,9 +1,10 @@
 <script setup>
+import { RouterLink } from 'vue-router'
+
+// 看板有 to 欄位才渲染成可點連結;沒有就是純展示列
 defineProps({
   boards: { type: Array, required: true },
 })
-
-defineEmits(['select'])
 </script>
 
 <template>
@@ -17,11 +18,13 @@ defineEmits(['select'])
       <span class="hidden w-16 sm:block">板主</span>
     </div>
 
-    <button
+    <component
+      :is="board.to ? RouterLink : 'div'"
       v-for="(board, i) in boards"
       :key="board.id"
-      class="flex w-full gap-2 px-3 py-1 text-left hover:bg-bbs-sel hover:text-bbs-bright"
-      @click="$emit('select', board)"
+      :to="board.to"
+      class="flex w-full gap-2 px-3 py-1"
+      :class="board.to ? 'hover:bg-bbs-sel hover:text-bbs-bright' : ''"
     >
       <span class="w-8 text-right text-bbs-dim">{{ i + 1 }}</span>
       <span class="w-12 text-bbs-warn">{{ board.category }}</span>
@@ -31,6 +34,6 @@ defineEmits(['select'])
       </span>
       <span class="flex-1 truncate">{{ board.title }}</span>
       <span class="hidden w-16 truncate text-bbs-dim sm:block">{{ board.moderator }}</span>
-    </button>
+    </component>
   </div>
 </template>

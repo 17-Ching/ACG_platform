@@ -1,35 +1,24 @@
 <script setup>
-// 外殼預覽頁:把四個共用元件用假資料排在一起,供確認視覺基調。
-// 外殼定案後,首頁會改成純看板列表,其餘元件由各關卡頁使用。
 import BoardList from '../components/BoardList.vue'
-import ThreadView from '../components/ThreadView.vue'
-import ProfileCard from '../components/ProfileCard.vue'
-import MessageThread from '../components/MessageThread.vue'
-import { demoBoards, demoThread, demoProfile, demoMessages } from '../data/demo.js'
+import { boards } from '../data/boards.js'
+import { pinnedThread } from '../data/threads.js'
+import { today, fmtMD } from '../data/anchors.js'
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
-    <p class="text-bbs-dim">※ 以下為共用元件外殼預覽(假資料)</p>
+  <div class="flex flex-col gap-4">
+    <!-- 置頂文 -->
+    <RouterLink
+      :to="`/thread/${pinnedThread.id}`"
+      class="block border border-bbs-border bg-bbs-panel px-3 py-2 hover:bg-bbs-sel"
+    >
+      <span class="text-bbs-boo">[置頂]</span>
+      <span class="ml-1 text-bbs-warn">{{ pinnedThread.title }}</span>
+      <span class="mt-1 block text-bbs-dim sm:float-right sm:mt-0 sm:inline">
+        {{ pinnedThread.author }} · {{ fmtMD(today) }}
+      </span>
+    </RouterLink>
 
-    <section>
-      <h2 class="mb-1 text-bbs-dim">【看板列表 BoardList】</h2>
-      <BoardList :boards="demoBoards" />
-    </section>
-
-    <section>
-      <h2 class="mb-1 text-bbs-dim">【文章串 ThreadView】</h2>
-      <ThreadView :thread="demoThread" />
-    </section>
-
-    <section>
-      <h2 class="mb-1 text-bbs-dim">【會員個資卡 ProfileCard】</h2>
-      <ProfileCard :profile="demoProfile" />
-    </section>
-
-    <section>
-      <h2 class="mb-1 text-bbs-dim">【站內信 MessageThread】</h2>
-      <MessageThread :messages="demoMessages" />
-    </section>
+    <BoardList :boards="boards" />
   </div>
 </template>
