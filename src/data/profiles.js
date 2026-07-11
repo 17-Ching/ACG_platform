@@ -2,7 +2,7 @@
 // 欄位值一律引用 src/data/anchors.js(= 總表),不在這裡硬寫數字。
 
 import {
-  today,
+  storyNow,
   registrationDate,
   fmtYMD,
   KROW_POST_COUNT,
@@ -16,7 +16,7 @@ export const profiles = {
     registeredAt: fmtYMD(registrationDate),
     postCount: KROW_POST_COUNT,
     birthday: KROW_BIRTHDAY,
-    lastLogin: `${fmtYMD(today)} ${KROW_LAST_ONLINE_TIME}`,
+    lastLogin: `${fmtYMD(storyNow)} ${KROW_LAST_ONLINE_TIME}`,
     signature: '「如果我之後都沒上線,幫我跟他說聲謝謝。」',
   },
 }

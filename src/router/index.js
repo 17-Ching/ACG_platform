@@ -23,6 +23,16 @@ const routes = [
     component: () => import('../views/UserProfileView.vue'),
   },
   {
+    path: '/user/:id/posts',
+    name: 'user-posts',
+    component: () => import('../views/PostHistoryView.vue'),
+  },
+  {
+    path: '/user/:id/mail',
+    name: 'user-mail',
+    component: () => import('../views/MailboxView.vue'),
+  },
+  {
     // 404:維持 in-world 語氣,不讓玩家分辨「不存在」與「還沒找到」
     path: '/:pathMatch(.*)*',
     name: 'not-found',
