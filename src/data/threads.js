@@ -4,7 +4,7 @@
 //
 // 文字內容一律照 docs/design/ 對應設計文件原文,不改寫、不擴寫。
 
-import { storyNow, fmtMDY, fmtMD, PHOTO_CODE } from './anchors.js'
+import { storyNow, fmtMDY, fmtMD, PHOTO_CODE, DOSSIER_THREAD } from './anchors.js'
 import { oldPosts } from './oldPosts.js'
 import { boardPosts } from './boardPosts.js'
 
@@ -41,17 +41,17 @@ const bounty = {
     { type: 'push', user: '路人', text: '樓上認真的?起雞皮疙瘩', time: fmtMD(storyNow) },
     { type: 'push', user: 'abc999', text: '反正閒著,我玩玩看。回到我開始的地方是三小', time: fmtMD(storyNow) },
     { type: 'push', user: 'momo_2', text: '他自己最早的文?點他 ID 看發文紀錄啊', time: fmtMD(storyNow) },
-    // 關卡 5 軟提示(docs/design/懸賞_關卡5_派對照片.md「實作與防呆」)
-    { type: 'push', user: 'KKcat', text: '檔名從來不是隨便取的。時間,還有他傳給你的座標。', time: fmtMD(storyNow) },
+    // 關卡 5 軟提示(依總表新規則調整,不明寫算式)
+    { type: 'push', user: 'KKcat', text: '檔名從來不是隨便取的。時、分,還有座標的整數。加起來。', time: fmtMD(storyNow) },
     // 關卡 6 入口軟提示:指向八卦板的上鎖文章
     { type: 'push', user: 'momo_2', text: '話說八卦板有人把這 ID 的底查出來了 結果文章鎖著 是在演哪齣', time: fmtMD(storyNow) },
   ],
 }
 
-// 關卡 6 人肉包:掛在八卦板的上鎖文章,編號與解鎖碼皆引用總表(178)。
+// 關卡 6 人肉包:掛在八卦板的上鎖文章,編號與解鎖碼皆引用總表。
 // 內文與推文照 docs/design/懸賞_關卡6_人肉搜索反轉.md 原文。
 const dossier = {
-  id: PHOTO_CODE,
+  id: DOSSIER_THREAD,
   board: '八卦',
   author: 'data_digger',
   title: '[爆卦] 我查到那個 ID 是誰了…你們最好坐著看',

@@ -44,10 +44,10 @@ function tryUnlock() {
       <input
         id="unlock-code"
         v-model="code"
-        maxlength="3"
+        maxlength="4"
         inputmode="numeric"
         autocomplete="off"
-        class="w-16 border-b border-bbs-border bg-transparent text-center tracking-widest text-bbs-bright outline-none focus:border-bbs-accent"
+        class="w-20 border-b border-bbs-border bg-transparent text-center tracking-widest text-bbs-bright outline-none focus:border-bbs-accent"
       />
       <button type="submit" class="text-bbs-link hover:text-bbs-bright">[解鎖]</button>
     </form>

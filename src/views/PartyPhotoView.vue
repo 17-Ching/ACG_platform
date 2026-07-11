@@ -18,7 +18,7 @@ const showInfo = ref(false)
   <div class="flex flex-col gap-4">
     <div class="border border-bbs-border bg-bbs-panel">
       <div class="border-b border-bbs-border px-3 py-1 text-bbs-accent">
-        ┌ 相片檢視 ─ party_0xx.jpg
+        ┌ 相片檢視 ─ party_0xxx.jpg
         <RouterLink to="/user/k_r_o_w/mail" class="float-right text-bbs-dim hover:text-bbs-bright">
           [回站內信]
         </RouterLink>
@@ -26,7 +26,7 @@ const showInfo = ref(false)
 
       <!-- 照片:暗版墊底,亮版隨亮度浮現 -->
       <div class="relative">
-        <img :src="darkSrc" :style="darkStyle" alt="party_0xx.jpg" class="block w-full select-none" />
+        <img :src="darkSrc" :style="darkStyle" alt="party_0xxx.jpg" class="block w-full select-none" />
         <img
           :src="brightSrc"
           :style="{ opacity: brightOpacity }"
@@ -55,7 +55,7 @@ const showInfo = ref(false)
       <!-- 相片資訊(模擬的檔案詳細資訊面板) -->
       <dl v-if="showInfo" class="grid grid-cols-[6rem_1fr] gap-x-2 border-t border-dashed border-bbs-border px-3 py-2">
         <dt class="text-bbs-dim">檔案名稱</dt>
-        <dd>party_0xx.jpg</dd>
+        <dd>party_0xxx.jpg</dd>
         <dt class="text-bbs-dim">拍攝時間</dt>
         <dd>{{ PHOTO_TAKEN_AT }}</dd>
         <dt class="text-bbs-dim">GPS 座標</dt>

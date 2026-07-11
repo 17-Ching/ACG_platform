@@ -3,7 +3,7 @@
 //
 // 新增文章的方式:用 post() 加一筆——
 //   post(id, board, author, title, date, clock, content, pushes)
-//   - id 全站唯一(避開 101、178 與總表保留號)
+//   - id 全站唯一(避開 101、256 與總表保留號)
 //   - board 必須等於 boards.js 某板的 name,會自動出現在該板列表(新到舊)
 //   - pushes 用 { type: 'push'|'boo'|'arrow', user, text, time } 格式
 // 主線文章(懸賞文、舊文、人肉包)不放這裡,在 threads.js / oldPosts.js。

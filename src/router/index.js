@@ -39,7 +39,7 @@ const routes = [
   },
   {
     // 相片檢視:只從站內信附檔連過來,不掛任何導覽
-    path: '/photo/party_0xx',
+    path: '/photo/party_0xxx',
     name: 'photo-party',
     component: () => import('../views/PartyPhotoView.vue'),
   },
