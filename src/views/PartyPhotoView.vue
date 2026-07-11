@@ -1,11 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import darkSrc from '../assets/party_dark.webp'
 import brightSrc from '../assets/party_bright.webp'
 import { PHOTO_TAKEN_AT, PHOTO_GPS } from '../data/anchors.js'
-
-const router = useRouter()
 
 // 亮度 0–100:暗版先用 CSS brightness 拉亮,過中段後亮版漸顯
 const level = ref(0)
@@ -15,12 +12,6 @@ const darkStyle = computed(() => ({
 const brightOpacity = computed(() => Math.min(1, Math.max(0, (level.value - 45) / 55)))
 
 const showInfo = ref(false)
-
-const threadNo = ref('')
-function goThread() {
-  const no = threadNo.value.trim()
-  if (no) router.push(`/thread/${no}`)
-}
 </script>
 
 <template>
@@ -72,21 +63,6 @@ function goThread() {
         <dt class="text-bbs-dim">拍攝裝置</dt>
         <dd class="text-bbs-dim">(未知)</dd>
       </dl>
-    </div>
-
-    <!-- 文章跳轉 -->
-    <div class="border border-bbs-border bg-bbs-panel px-3 py-2">
-      <form class="flex items-baseline gap-2" @submit.prevent="goThread">
-        <span class="text-bbs-dim">前往文章 #</span>
-        <input
-          v-model="threadNo"
-          maxlength="6"
-          inputmode="numeric"
-          autocomplete="off"
-          class="w-24 border-b border-bbs-border bg-transparent text-bbs-bright outline-none focus:border-bbs-accent"
-        />
-        <button type="submit" class="text-bbs-link hover:text-bbs-bright">[前往]</button>
-      </form>
     </div>
   </div>
 </template>

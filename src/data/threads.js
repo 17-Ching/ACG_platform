@@ -4,14 +4,15 @@
 //
 // 文字內容一律照 docs/design/ 對應設計文件原文,不改寫、不擴寫。
 
-import { storyNow, fmtMDY, fmtMD, PHOTO_THREAD } from './anchors.js'
+import { storyNow, fmtMDY, fmtMD, PHOTO_CODE } from './anchors.js'
 import { oldPosts } from './oldPosts.js'
+import { boardPosts } from './boardPosts.js'
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
 const bounty = {
   id: '101', // 公開文章編號,登錄於總表「隱藏頁/特殊路由一覽」
-  board: '都市傳說',
+  board: '協尋',
   pinned: true,
   author: 'k_r_o_w',
   title: '[懸賞] 我藏了東西。找到的人,錢是你的。',
@@ -42,26 +43,66 @@ const bounty = {
     { type: 'push', user: 'momo_2', text: '他自己最早的文?點他 ID 看發文紀錄啊', time: fmtMD(storyNow) },
     // 關卡 5 軟提示(docs/design/懸賞_關卡5_派對照片.md「實作與防呆」)
     { type: 'push', user: 'KKcat', text: '檔名從來不是隨便取的。時間,還有他傳給你的座標。', time: fmtMD(storyNow) },
+    // 關卡 6 入口軟提示:指向八卦板的上鎖文章
+    { type: 'push', user: 'momo_2', text: '話說八卦板有人把這 ID 的底查出來了 結果文章鎖著 是在演哪齣', time: fmtMD(storyNow) },
   ],
 }
 
-// /thread/178:關卡 6 所在樓層,編號引用總表(檔名密碼的解)。
-// 目前僅佔位,正式文本待關卡 6 依設計文件實作時替換。
-const hiddenFloor = {
-  id: PHOTO_THREAD,
-  board: '(未分類)',
+// 關卡 6 人肉包:掛在八卦板的上鎖文章,編號與解鎖碼皆引用總表(178)。
+// 內文與推文照 docs/design/懸賞_關卡6_人肉搜索反轉.md 原文。
+const dossier = {
+  id: PHOTO_CODE,
+  board: '八卦',
   author: 'data_digger',
-  title: '(整理中)',
+  title: '[爆卦] 我查到那個 ID 是誰了…你們最好坐著看',
+  locked: { code: PHOTO_CODE },
   date: storyNow,
-  time: fmtMDY(storyNow),
-  content: '(這一串還在整理。之後再回來。)',
-  pushes: [],
+  time: `${fmtMDY(storyNow)} 21:12`,
+  content: [
+    '花了三天。整理一下,自己判斷。',
+    '',
+    '【這個 ID】',
+    '· 註冊三年前,發文 17 篇,全是深夜心情文。',
+    '· 兩年前「失蹤當週」那篇之後,整整兩年 0 發文、0 上線。',
+    '· 然後前陣子,突然發了懸賞文。',
+    '',
+    '【這個人】',
+    '· 比對舊文透露的線索(學區、生活圈、口氣),',
+    '  對得上兩年前一則沒什麼人轉的地方新聞:',
+    '  一名國中生離家後失蹤,通報後查無下落,不了了之。',
+    '· 年紀、時間、生活圈,全部吻合。',
+    '· 講白一點:發懸賞文的這個帳號,',
+    '  它的主人兩年前就不見了,而且很可能已經不在了。',
+    '',
+    '【但這裡開始不對勁】',
+    '· 我去比對登入紀錄。這個帳號「失蹤後兩年」是死的沒錯,',
+    '· 但最近的登入 IP,跟他本人以前慣用的完全不一樣。',
+    '· 而且密碼被重設過一次——時間就在懸賞文貼出來的前幾天。',
+    '',
+    '所以問題來了:',
+    '一個兩年前就失蹤的人,',
+    '是誰在幾天前,重設了他的密碼、登入、然後發文?',
+  ].join('\n'),
+  pushes: [
+    { type: 'push', user: 'momo_2', text: '等等 所以發文的不是他本人?', time: fmtMD(storyNow) },
+    { type: 'push', user: 'data_digger', text: '我沒說。我只說 IP 和密碼被動過。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'data_digger', text: '也可能是他自己。我不知道。我只把資料放這。', time: fmtMD(storyNow) },
+    { type: 'push', user: '路人', text: '那個新聞我有印象…原來就是他喔 幹 有點難過', time: fmtMD(storyNow) },
+    { type: 'push', user: 'rich_hunter', text: '所以到底有沒有懸賞金啦(怕', time: fmtMD(storyNow) },
+    { type: 'push', user: 'KKcat', text: '……你們現在才知道他失蹤。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'KKcat', text: '我兩年前就跟你們說過,他不是會消失的人。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'KKcat', text: '沒人信。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'momo_2', text: 'KKcat 你先冷靜 你是不是知道什麼', time: fmtMD(storyNow) },
+    { type: 'push', user: 'KKcat', text: '我只知道,他最後一句話是叫我不要找他。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'KKcat', text: '可是他明明就在找我們。', time: fmtMD(storyNow) },
+  ],
 }
 
 export const pinnedThread = bounty
 
 export const threads = {
   [bounty.id]: bounty,
-  [hiddenFloor.id]: hiddenFloor,
+  [dossier.id]: dossier,
   ...Object.fromEntries(oldPosts.map((post) => [post.id, post])),
+  ...Object.fromEntries(boardPosts.map((post) => [post.id, post])),
 }

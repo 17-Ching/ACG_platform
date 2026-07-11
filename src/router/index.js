@@ -13,6 +13,11 @@ const routes = [
     component: HomeView,
   },
   {
+    path: '/board/:id',
+    name: 'board',
+    component: () => import('../views/BoardView.vue'),
+  },
+  {
     path: '/thread/:id',
     name: 'thread',
     component: () => import('../views/ThreadPageView.vue'),
