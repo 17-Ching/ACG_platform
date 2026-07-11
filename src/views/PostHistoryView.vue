@@ -6,21 +6,6 @@ import { fmtYMD } from '../data/anchors.js'
 
 const route = useRoute()
 const posts = computed(() => postHistory[route.params.id])
-
-// 相鄰兩篇相隔超過 600 天就插入一段「空白斷層」區塊
-const GAP_DAYS = 600
-const rows = computed(() => {
-  const out = []
-  ;(posts.value ?? []).forEach((post, i) => {
-    if (i > 0) {
-      const prev = posts.value[i - 1]
-      const days = (prev.date - post.date) / 86400000
-      if (days > GAP_DAYS) out.push({ gap: true })
-    }
-    out.push(post)
-  })
-  return out
-})
 </script>
 
 <template>
@@ -31,33 +16,16 @@ const rows = computed(() => {
     </div>
 
     <div class="px-3 py-2">
-      <template v-for="(row, i) in rows" :key="i">
-        <!-- 空白斷層 -->
-        <div
-          v-if="row.gap"
-          class="my-2 border-y border-dashed border-bbs-border py-10 text-center text-bbs-dim"
-        >
-          (中間空白兩年,沒有任何發文)
-        </div>
-
-        <!-- 可點的文章列 -->
-        <RouterLink
-          v-else-if="row.threadId"
-          :to="`/thread/${row.threadId}`"
-          class="flex gap-3 py-0.5 hover:bg-bbs-sel hover:text-bbs-bright"
-        >
-          <span class="shrink-0 text-bbs-dim">·</span>
-          <span class="flex-1 truncate text-bbs-link">{{ row.title }}</span>
-          <span class="shrink-0 text-bbs-dim">{{ fmtYMD(row.date) }}</span>
-        </RouterLink>
-
-        <!-- 純列表項 -->
-        <div v-else class="flex gap-3 py-0.5">
-          <span class="shrink-0 text-bbs-dim">·</span>
-          <span class="flex-1 truncate">{{ row.title }}</span>
-          <span class="shrink-0 text-bbs-dim">{{ fmtYMD(row.date) }}</span>
-        </div>
-      </template>
+      <RouterLink
+        v-for="post in posts"
+        :key="post.threadId"
+        :to="`/thread/${post.threadId}`"
+        class="flex gap-3 py-0.5 hover:bg-bbs-sel hover:text-bbs-bright"
+      >
+        <span class="shrink-0 text-bbs-dim">·</span>
+        <span class="flex-1 truncate text-bbs-link">{{ post.title }}</span>
+        <span class="shrink-0 text-bbs-dim">{{ fmtYMD(post.date) }}</span>
+      </RouterLink>
     </div>
   </div>
 

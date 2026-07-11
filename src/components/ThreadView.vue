@@ -84,6 +84,9 @@ function segments(text) {
         <span class="shrink-0 text-bbs-dim">{{ push.time }}</span>
       </div>
     </footer>
+    <footer v-else class="border-t border-bbs-border px-3 py-2 text-bbs-dim">
+      (本文 0 推 0 噓 0 留言)
+    </footer>
 
     <!-- 訪客推文輸入列 -->
     <div v-if="visitorId" class="border-t border-bbs-border px-3 py-2">

@@ -4,7 +4,8 @@
 //
 // 文字內容一律照 docs/design/ 對應設計文件原文,不改寫、不擴寫。
 
-import { storyNow, oldPostDates, fmtMDY, fmtMD } from './anchors.js'
+import { storyNow, fmtMDY, fmtMD } from './anchors.js'
+import { oldPosts } from './oldPosts.js'
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
@@ -14,6 +15,7 @@ const bounty = {
   pinned: true,
   author: 'k_r_o_w',
   title: '[懸賞] 我藏了東西。找到的人,錢是你的。',
+  date: storyNow,
   time: `${fmtMDY(storyNow)} 00:00`,
   content: [
     '規則很簡單:跟著線索走就好。',
@@ -41,35 +43,9 @@ const bounty = {
   ],
 }
 
-// 舊文①(docs/design/懸賞_舊文文本與密碼設計.md PART 1)
-// k_r_o_w 最早的貼文,由發文紀錄頁最底進入
-const oldPost1 = {
-  id: '23', // 登錄於總表「隱藏頁/特殊路由一覽」
-  board: '心情',
-  author: 'k_r_o_w',
-  title: '[心情] 有人半夜也睡不著的嗎',
-  time: `${fmtMDY(oldPostDates.p1)} 03:47`,
-  content: [
-    '不想回去。',
-    '在超商坐到店員一直看我。',
-    '如果有個地方可以不用回家就好了。',
-    '反正也沒人發現我不在。',
-    '',
-    '—— 手機發文,排版亂請見諒',
-  ].join('\n'),
-  pushes: [
-    { type: 'push', user: '路人甲', text: '生活好無聊,路過推一下', time: fmtMD(oldPostDates.p1) },
-    { type: 'push', user: 'abc123', text: '日出了還在爬文,我也是醉了 zzz', time: fmtMD(oldPostDates.p1) },
-    { type: 'push', user: '小明', text: '就這?沒圖沒真相 XD', time: fmtMD(oldPostDates.p1) },
-    { type: 'push', user: '夜貓', text: '是在哈囉,這板怎麼這麼冷', time: fmtMD(oldPostDates.p1) },
-    { type: 'push', user: '匿名', text: '密的啦,樓主加油(隨手推)', time: fmtMD(oldPostDates.p1) },
-    { type: 'push', user: '過客', text: '碼的,怎麼都沒人正經回你,同情推', time: fmtMD(oldPostDates.p1) },
-  ],
-}
-
 export const pinnedThread = bounty
 
 export const threads = {
   [bounty.id]: bounty,
-  [oldPost1.id]: oldPost1,
+  ...Object.fromEntries(oldPosts.map((post) => [post.id, post])),
 }
