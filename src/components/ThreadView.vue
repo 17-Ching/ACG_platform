@@ -70,6 +70,16 @@ function segments(text) {
     <!-- 主文(pre-wrap 容器,標記全部寫在同一行以免多出空白) -->
     <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(seg, i) in segments(thread.content)" :key="i"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></div>
 
+    <!-- 文末引用區塊:thread.quote = { title, lines, to },整塊可點 -->
+    <RouterLink
+      v-if="thread.quote"
+      :to="thread.quote.to"
+      class="mx-3 mb-3 block border border-dashed border-bbs-border px-3 py-2 hover:bg-bbs-sel hover:text-bbs-bright"
+    >
+      <div class="text-bbs-dim">※ 引述【{{ thread.quote.title }}】</div>
+      <div v-for="(line, i) in thread.quote.lines" :key="i" class="whitespace-pre-wrap">{{ line }}</div>
+    </RouterLink>
+
     <!-- 推文列表(劇情推文在前,訪客推文在後;訪客 ID 用暗色微妙區分) -->
     <footer v-if="allPushes.length" class="border-t border-bbs-border px-3 py-2">
       <div v-for="(push, i) in allPushes" :key="i" class="flex gap-2">

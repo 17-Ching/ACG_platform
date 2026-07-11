@@ -7,6 +7,7 @@
 import { storyNow, fmtMDY, fmtMD, PHOTO_CODE, DOSSIER_THREAD } from './anchors.js'
 import { oldPosts } from './oldPosts.js'
 import { boardPosts } from './boardPosts.js'
+import { profiles } from './profiles.js'
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
@@ -83,6 +84,12 @@ const dossier = {
     '一個兩年前就失蹤的人,',
     '是誰在幾天前,重設了他的密碼、登入、然後發文?',
   ].join('\n'),
+  // 文末引用區塊:引個資頁的欄位原值,整塊可點回 /user/k_r_o_w
+  quote: {
+    title: '會員資料 —— k_r_o_w',
+    lines: [`最後上線    ${profiles.k_r_o_w.lastLogin}`],
+    to: '/user/k_r_o_w',
+  },
   pushes: [
     { type: 'push', user: 'momo_2', text: '等等 所以發文的不是他本人?', time: fmtMD(storyNow) },
     { type: 'push', user: 'data_digger', text: '我沒說。我只說 IP 和密碼被動過。', time: fmtMD(storyNow) },
@@ -95,6 +102,10 @@ const dossier = {
     { type: 'push', user: 'momo_2', text: 'KKcat 你先冷靜 你是不是知道什麼', time: fmtMD(storyNow) },
     { type: 'push', user: 'KKcat', text: '我只知道,他最後一句話是叫我不要找他。', time: fmtMD(storyNow) },
     { type: 'push', user: 'KKcat', text: '可是他明明就在找我們。', time: fmtMD(storyNow) },
+    // 以下三則為關卡 7 的追查線頭(設計文件之外的補充,data_digger 維持只擺事實)
+    { type: 'push', user: 'momo_2', text: '所以那個案子呢 就這樣不了了之?', time: fmtMD(storyNow) },
+    { type: 'push', user: 'data_digger', text: '通報後沒幾天就沒下文了。為什麼,自己想。', time: fmtMD(storyNow) },
+    { type: 'push', user: 'data_digger', text: '如果有人手上有那晚的東西,把時間、地點對一對。', time: fmtMD(storyNow) },
   ],
 }
 
