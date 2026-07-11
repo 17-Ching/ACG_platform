@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-bbs-bg text-bbs-fg font-mono;
+  }
+
+  body {
+    @apply min-h-screen text-sm leading-relaxed;
+  }
+
+  ::selection {
+    @apply bg-bbs-sel text-bbs-bright;
+  }
+
+  /* 老終端感的細捲軸 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.bbs.border') theme('colors.bbs.bg');
+  }
+}
