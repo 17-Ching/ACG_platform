@@ -25,6 +25,11 @@ export const KROW_LAST_ONLINE_TIME = '00:03'
 export const MAILBOX_PASSCODE = '0314' // 站內信通行碼(關卡 3)
 export const MAIL_REVEAL_SECONDS = 30 // 站內信最底那則訊息的淡入等待秒數
 
+// ── 關卡 5 相片(總表「關卡 5 檔名密碼推導」)──
+export const PHOTO_CLOCK = '23:47' // 照片內電子鐘
+export const PHOTO_GPS = '24.876502, 121.318831' // EXIF 座標(虛構地點),尾三碼 831
+export const PHOTO_THREAD = '178' // 檔名密碼解出的文章編號 → /thread/178
+
 // ── 日期格式化(BBS 慣用格式)──
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -42,3 +47,6 @@ export function fmtMDY(d) {
 export function fmtMD(d) {
   return `${pad(d.getMonth() + 1)}/${pad(d.getDate())}`
 }
+
+// EXIF 拍攝時間 = 失蹤日當晚,與照片鐘面一致(總表)
+export const PHOTO_TAKEN_AT = `${fmtYMD(dormantSince)} ${PHOTO_CLOCK}`

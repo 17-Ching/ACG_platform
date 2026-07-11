@@ -4,7 +4,7 @@
 //
 // 文字內容一律照 docs/design/ 對應設計文件原文,不改寫、不擴寫。
 
-import { storyNow, fmtMDY, fmtMD } from './anchors.js'
+import { storyNow, fmtMDY, fmtMD, PHOTO_THREAD } from './anchors.js'
 import { oldPosts } from './oldPosts.js'
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
@@ -40,12 +40,28 @@ const bounty = {
     { type: 'push', user: '路人', text: '樓上認真的?起雞皮疙瘩', time: fmtMD(storyNow) },
     { type: 'push', user: 'abc999', text: '反正閒著,我玩玩看。回到我開始的地方是三小', time: fmtMD(storyNow) },
     { type: 'push', user: 'momo_2', text: '他自己最早的文?點他 ID 看發文紀錄啊', time: fmtMD(storyNow) },
+    // 關卡 5 軟提示(docs/design/懸賞_關卡5_派對照片.md「實作與防呆」)
+    { type: 'push', user: 'KKcat', text: '檔名從來不是隨便取的。時間,還有他傳給你的座標。', time: fmtMD(storyNow) },
   ],
+}
+
+// /thread/178:關卡 6 所在樓層,編號引用總表(檔名密碼的解)。
+// 目前僅佔位,正式文本待關卡 6 依設計文件實作時替換。
+const hiddenFloor = {
+  id: PHOTO_THREAD,
+  board: '(未分類)',
+  author: 'data_digger',
+  title: '(整理中)',
+  date: storyNow,
+  time: fmtMDY(storyNow),
+  content: '(這一串還在整理。之後再回來。)',
+  pushes: [],
 }
 
 export const pinnedThread = bounty
 
 export const threads = {
   [bounty.id]: bounty,
+  [hiddenFloor.id]: hiddenFloor,
   ...Object.fromEntries(oldPosts.map((post) => [post.id, post])),
 }

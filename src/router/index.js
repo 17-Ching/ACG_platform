@@ -33,6 +33,12 @@ const routes = [
     component: () => import('../views/MailboxView.vue'),
   },
   {
+    // 相片檢視:只從站內信附檔連過來,不掛任何導覽
+    path: '/photo/party_0xx',
+    name: 'photo-party',
+    component: () => import('../views/PartyPhotoView.vue'),
+  },
+  {
     // 404:維持 in-world 語氣,不讓玩家分辨「不存在」與「還沒找到」
     path: '/:pathMatch(.*)*',
     name: 'not-found',

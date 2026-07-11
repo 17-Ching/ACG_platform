@@ -21,7 +21,14 @@ defineProps({
           <span :class="msg.own ? 'text-bbs-warn' : 'text-bbs-accent'">{{ msg.from }}</span>
           <span class="ml-auto shrink-0 text-bbs-dim">{{ msg.time }}</span>
         </div>
-        <div class="whitespace-pre-wrap break-words">{{ msg.content }}</div>
+        <div class="whitespace-pre-wrap break-words">
+          <RouterLink
+            v-if="msg.link"
+            :to="msg.link"
+            class="text-bbs-link underline hover:text-bbs-bright"
+          >{{ msg.content }}</RouterLink>
+          <template v-else>{{ msg.content }}</template>
+        </div>
         <div v-if="msg.read === true" class="text-right text-bbs-dim">
           ○ 已讀{{ msg.readAt ? ` ${msg.readAt}` : '' }}
         </div>

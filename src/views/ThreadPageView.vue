@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ThreadView from '../components/ThreadView.vue'
-import NotFoundView from './NotFoundView.vue'
 import { threads } from '../data/threads.js'
 import { profiles } from '../data/profiles.js'
 import { useVisitorPostsStore, VISITOR_ID } from '../stores/visitorPosts.js'
@@ -24,5 +23,10 @@ const visitorPushes = computed(() => visitorPosts.pushesFor(route.params.id))
     :visitor-id="VISITOR_ID"
     @submit-push="visitorPosts.addPush(route.params.id, $event)"
   />
-  <NotFoundView v-else />
+  <div v-else class="border border-bbs-border bg-bbs-panel px-3 py-6 text-center">
+    <p>文章不存在。……還是你根本不想找到?</p>
+    <RouterLink to="/" class="mt-2 inline-block text-bbs-link hover:text-bbs-bright">
+      [回到首頁]
+    </RouterLink>
+  </div>
 </template>

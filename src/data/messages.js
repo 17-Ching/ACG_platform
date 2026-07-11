@@ -28,7 +28,7 @@ export const mailboxes = {
       { id: 11, from: 'guest_x', time: '2014/08/25 21:04', content: '你這種聊得來的,去了一定不無聊。要來嗎?', read: true, readAt: '2014/08/25' },
       { id: 12, from: 'k_r_o_w', own: true, time: '2014/08/25 21:09', content: '我?可以喔?' },
       { id: 13, from: 'guest_x', time: '2014/08/25 21:10', content: '當然。我傳地址給你。', read: true, readAt: '2014/08/25' },
-      { id: 14, from: 'guest_x', time: '2014/08/25 21:11', content: '[附檔:party_0xx.jpg]', read: true, readAt: '2014/08/25' },
+      { id: 14, from: 'guest_x', time: '2014/08/25 21:11', content: '[附檔:party_0xx.jpg]', link: '/photo/party_0xx', read: true, readAt: '2014/08/25' },
       { id: 15, from: 'k_r_o_w', own: true, time: '2014/08/25 21:14', content: '好 我去' },
       { id: 16, from: 'k_r_o_w', own: true, time: '2014/08/25 21:15', content: '好久沒這麼期待一件事了' },
 
