@@ -27,9 +27,13 @@ export const MAIL_REVEAL_SECONDS = 30 // 站內信最底那則訊息的淡入等
 
 // ── 關卡 5 相片(總表「關卡 5 檔名密碼推導」)──
 export const PHOTO_CLOCK = '23:47' // 照片內電子鐘
-export const PHOTO_GPS = '24.876502, 121.318442' // EXIF 座標(虛構地點),整數部分參與解碼
+export const PHOTO_GPS = '24.941283, 121.506374' // EXIF 座標(虛構地點,新店安坑山區一帶),整數部分參與解碼
 export const PHOTO_CODE = '0215' // 檔名密碼的解 = 八卦板上鎖文章解鎖碼,推導見總表
 export const DOSSIER_THREAD = '256' // 八卦板上鎖文章(人肉包)的文章編號
+
+// ── 派對地點(總表;架空地址,關卡 7 會館線索沿用)──
+export const VENUE_NAME = '聞山會館'
+export const VENUE_ADDRESS = '新北市新店區安坑段山邊路 27 巷 9 號'
 
 // ── 日期格式化(BBS 慣用格式)──
 const pad = (n) => String(n).padStart(2, '0')
