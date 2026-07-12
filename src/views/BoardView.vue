@@ -8,12 +8,12 @@ import { fmtMD } from '../data/anchors.js'
 const route = useRoute()
 const board = computed(() => boards.find((b) => b.id === route.params.id))
 
-// 該板文章:從註冊表依板名撈,新到舊
+// 該板文章:從註冊表依板名撈,置頂旗標優先,其餘新到舊
 const list = computed(() =>
   board.value
     ? Object.values(threads)
         .filter((thread) => thread.board === board.value.name)
-        .sort((a, b) => b.date - a.date)
+        .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.date - a.date)
     : [],
 )
 </script>

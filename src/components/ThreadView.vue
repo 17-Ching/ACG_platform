@@ -22,6 +22,9 @@ const pushMark = {
 
 const allPushes = computed(() => [...(props.thread.pushes ?? []), ...props.visitorPushes])
 
+// 文末引用區塊:支援 thread.quotes(陣列)與舊式 thread.quote(單筆)
+const quoteList = computed(() => props.thread.quotes ?? (props.thread.quote ? [props.thread.quote] : []))
+
 const draft = ref('')
 
 function submit() {
@@ -70,14 +73,15 @@ function segments(text) {
     <!-- 主文(pre-wrap 容器,標記全部寫在同一行以免多出空白) -->
     <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(seg, i) in segments(thread.content)" :key="i"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></div>
 
-    <!-- 文末引用區塊:thread.quote = { title, lines, to },整塊可點 -->
+    <!-- 文末引用區塊:{ title, lines, to },整塊可點 -->
     <RouterLink
-      v-if="thread.quote"
-      :to="thread.quote.to"
+      v-for="(quote, qi) in quoteList"
+      :key="qi"
+      :to="quote.to"
       class="mx-3 mb-3 block border border-dashed border-bbs-border px-3 py-2 hover:bg-bbs-sel hover:text-bbs-bright"
     >
-      <div class="text-bbs-dim">※ 引述【{{ thread.quote.title }}】</div>
-      <div v-for="(line, i) in thread.quote.lines" :key="i" class="whitespace-pre-wrap">{{ line }}</div>
+      <div class="text-bbs-dim">※ 引述【{{ quote.title }}】</div>
+      <div v-for="(line, i) in quote.lines" :key="i" class="whitespace-pre-wrap">{{ line }}</div>
     </RouterLink>
 
     <!-- 推文列表(劇情推文在前,訪客推文在後;訪客 ID 用暗色微妙區分) -->

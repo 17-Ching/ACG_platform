@@ -6,6 +6,7 @@
 export const storyNow = new Date(2016, 7, 29) // 故事當下 = 懸賞文發文日 2016/08/29
 export const registrationDate = new Date(2013, 3, 22) // 註冊日 2013/04/22
 export const dormantSince = new Date(2014, 7, 29) // 帳號沉寂起點 2014/08/29(週五)
+export const caseClosedDate = new Date(2014, 8, 3) // 結案日 2014/09/03(= 上行 + 5 天,總表)
 
 // ── 舊文日期(總表「舊文與站內信日期」)──
 export const oldPostDates = {
