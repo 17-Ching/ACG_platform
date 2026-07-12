@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { VISITOR_ID } from '../stores/visitorPosts.js'
 
 // 路由規則:
 // - /thread/:id 與 /user/:id 都從 src/data/ 的註冊表查資料,查不到就顯示
@@ -31,6 +32,12 @@ const routes = [
     path: '/user/:id/posts',
     name: 'user-posts',
     component: () => import('../views/PostHistoryView.vue'),
+  },
+  {
+    // 訪客自己的信匣(終局):靜態路徑優先於下面的動態信匣規則
+    path: `/user/${VISITOR_ID}/mail`,
+    name: 'finale',
+    component: () => import('../views/FinaleView.vue'),
   },
   {
     path: '/user/:id/mail',
