@@ -51,6 +51,12 @@ const routes = [
     component: () => import('../views/PartyPhotoView.vue'),
   },
   {
+    // 卷宗調閱:只從結案截圖的引用區塊連過來,不掛任何導覽
+    path: '/archive',
+    name: 'archive',
+    component: () => import('../views/ArchiveView.vue'),
+  },
+  {
     // 404:維持 in-world 語氣,不讓玩家分辨「不存在」與「還沒找到」
     path: '/:pathMatch(.*)*',
     name: 'not-found',

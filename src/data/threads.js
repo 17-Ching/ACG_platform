@@ -275,7 +275,7 @@ const caseClosure = {
     "│ 案件狀態    已結案",
     "│ 結案事由    當事人自行返家,協尋解除",
     `│ 結案日期    ${fmtYMD(caseClosedDate)}`,
-    "│ 附件編號    ███-████-███(已封存,無法調閱)",
+    "│ 附件編號    ████-████-███(已封存,無法調閱)",
     "└──────────────────────────",
   ].join("\n"),
   quotes: [
@@ -283,6 +283,12 @@ const caseClosure = {
       title: "轉貼:兩年前的舊聞",
       lines: ["〈少年離家後失蹤 家屬報案〉"],
       to: "/thread/258",
+    },
+    // 關卡 7.5 入口:整塊可點,連到卷宗調閱頁
+    {
+      title: "卷宗調閱系統",
+      lines: ["附件編號 ████-████-███(已封存,無法調閱)"],
+      to: "/archive",
     },
   ],
   pushes: [
@@ -302,6 +308,19 @@ const caseClosure = {
       type: "push",
       user: "KKcat",
       text: "他根本沒有家可以回。",
+      time: fmtMD(storyNow),
+    },
+    // 關卡 7.5 軟提示:指向格式與「重用一路解過的碼」,不列答案
+    {
+      type: "push",
+      user: "data_digger",
+      text: "塗黑蓋得住數字,蓋不住長度。",
+      time: fmtMD(storyNow),
+    },
+    {
+      type: "push",
+      user: "KKcat",
+      text: "你一路解開的那些數字,不是用完就丟的。",
       time: fmtMD(storyNow),
     },
   ],

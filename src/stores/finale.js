@@ -5,9 +5,8 @@ import { DOSSIER_THREAD } from '../data/anchors.js'
 
 const STORAGE_KEY = 'bbs-finale'
 
-// 終局觸發:兩道密碼關(站內信匣、八卦板上鎖文章)都開過,才算東西到手。
-// 之後有新的里程碑(例:卷宗調閱頁)時,把對應的 progress key 補進來即可。
-const REQUIRED_KEYS = ['mail:k_r_o_w', `unlock:${DOSSIER_THREAD}`]
+// 終局觸發:三道關(站內信匣、八卦板上鎖文章、卷宗調閱)都開過,才算東西到手。
+const REQUIRED_KEYS = ['mail:k_r_o_w', `unlock:${DOSSIER_THREAD}`, 'archive:report']
 
 // 兩個結局的代號:expose = 公開證據,silence = 刪除證據收下錢
 const CHOICES = ['expose', 'silence']

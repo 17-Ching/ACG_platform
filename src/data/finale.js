@@ -17,7 +17,7 @@ const clock = (hhmm) => `${fmtMDY(storyNow)} ${hhmm}`
 
 // ── 抉擇點 ──
 
-// 玩家一路蒐集的物證。檢驗報告尚無站內入口,以調閱編號存目。
+// 玩家一路蒐集的物證,各項連回原出處。
 export const evidenceItems = [
   {
     label: '派對照片 party_0xxx.jpg',
@@ -42,7 +42,7 @@ export const evidenceItems = [
   {
     label: '現場採證暨檢驗報告(節本)',
     note: `已封存 · 調閱編號 ${ARCHIVE_QUERY_CODE}`,
-    to: null,
+    to: '/archive',
   },
 ]
 
