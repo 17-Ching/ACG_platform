@@ -21,6 +21,7 @@ import { boardPosts } from "./boardPosts.js";
 import { profiles } from "./profiles.js";
 import newsScan from "../assets/news.png";
 import reportScan from "../assets/report.webp";
+import chatShot from "../assets/chat_confession.png";
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
@@ -348,19 +349,12 @@ const shanBackup = {
   },
   date: BACKUP_POST_DATE,
   time: `${fmtMDY(BACKUP_POST_DATE)} 02:11`,
-  content: [
-    "我不知道誰會找到這裡,也不知道那時我還在不在。",
-    "",
-    "當年我在場。我什麼都沒做——",
-    "這句話我對自己講了很多次,沒有一次講得過去。",
-    "",
-    "東西我留了一份,放在下面。",
-    "看完你就知道,為什麼這件事沒有人敢講。",
-  ].join("\n"),
+  content: "我留了一份,在這裡。",
   images: [{ src: reportScan, alt: "現場採證暨檢驗報告(節本)掃描件" }],
   chatLogs: [
     {
-      image: null,
+      // 真截圖已補上;lines 保留為校對底稿與備援,不再渲染
+      image: chatShot,
       caption: "[翻拍] 對話紀錄(來源不明)",
       lines: [
         { speaker: "小開", text: "處理好了嗎" },
@@ -370,18 +364,13 @@ const shanBackup = {
         // 座標行:以塗黑狀態顯示,之後的步驟才做解讀
         { speaker: "友人", text: "████████████████████", redacted: true },
         { speaker: "小開", text: "確定沒人看到" },
-        { speaker: "友人", text: "靠 你別烏鴉嘴 飄版竟然有人 po 說那晚看到黑影" },
+        {
+          speaker: "友人",
+          text: "靠 你別烏鴉嘴 飄版竟然有人 po 說那晚看到黑影",
+        },
         { speaker: "小開", text: "幹 那篇壓一下 叫 justice6767 去洗" },
         { speaker: "友人", text: "已經在弄了 沒人會信啦 當鬼故事而已" },
       ],
-    },
-  ],
-  // 文末引用:整塊可點,回懸賞主文
-  quotes: [
-    {
-      title: bounty.title,
-      lines: [bounty.content.split("\n").at(-1)],
-      to: `/thread/${bounty.id}`,
     },
   ],
 };
