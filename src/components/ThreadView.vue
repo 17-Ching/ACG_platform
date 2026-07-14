@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref } from "vue";
 
 const props = defineProps({
   thread: { type: Object, required: true },
@@ -8,50 +8,62 @@ const props = defineProps({
   // 訪客留下的推文(由頁面從 visitorPosts store 取出傳入)
   visitorPushes: { type: Array, default: () => [] },
   // 訪客推文輸入列的署名
-  visitorId: { type: String, default: '' },
-})
+  visitorId: { type: String, default: "" },
+});
 
-const emit = defineEmits(['submit-push'])
+const emit = defineEmits(["submit-push"]);
 
 // 推文三種型態的字首與顏色,做成一眼可辨:推=綠、噓=紅、→=黃
 const pushMark = {
-  push: { symbol: '推', class: 'text-bbs-push' },
-  boo: { symbol: '噓', class: 'text-bbs-boo' },
-  arrow: { symbol: '→', class: 'text-bbs-warn' },
-}
+  push: { symbol: "推", class: "text-bbs-push" },
+  boo: { symbol: "噓", class: "text-bbs-boo" },
+  arrow: { symbol: "→", class: "text-bbs-warn" },
+};
 
-const allPushes = computed(() => [...(props.thread.pushes ?? []), ...props.visitorPushes])
+const allPushes = computed(() => [
+  ...(props.thread.pushes ?? []),
+  ...props.visitorPushes,
+]);
 
 // 文末引用區塊:支援 thread.quotes(陣列)與舊式 thread.quote(單筆)
-const quoteList = computed(() => props.thread.quotes ?? (props.thread.quote ? [props.thread.quote] : []))
+const quoteList = computed(
+  () => props.thread.quotes ?? (props.thread.quote ? [props.thread.quote] : []),
+);
 
 // 內文附圖(thread.images)與對話截圖(thread.chatLogs):點圖放大,各自同一時間只放大一張
-const zoomedImage = ref(null)
-const zoomedChat = ref(null)
+const zoomedImage = ref(null);
+const zoomedChat = ref(null);
 
 // 內文分段:contentParts 可混合一般段與 hidden 段(反白段:選取或點擊才顯現)
-const contentParts = computed(() => props.thread.contentParts ?? [{ text: props.thread.content }])
-const revealed = ref({})
+const contentParts = computed(
+  () => props.thread.contentParts ?? [{ text: props.thread.content }],
+);
+const revealed = ref({});
 
-const draft = ref('')
+const draft = ref("");
 
 function submit() {
-  const text = draft.value.trim()
-  if (!text) return
-  emit('submit-push', text)
-  draft.value = ''
+  const text = draft.value.trim();
+  if (!text) return;
+  emit("submit-push", text);
+  draft.value = "";
 }
 
-const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // 把文字切成「一般文字」與「可點 ID」的片段
 function segments(text) {
-  if (!props.linkedIds.length || !text) return [{ text }]
-  const re = new RegExp(`(${props.linkedIds.map(escapeRegExp).join('|')})`, 'g')
+  if (!props.linkedIds.length || !text) return [{ text }];
+  const re = new RegExp(
+    `(${props.linkedIds.map(escapeRegExp).join("|")})`,
+    "g",
+  );
   return text
     .split(re)
     .filter(Boolean)
-    .map((part) => (props.linkedIds.includes(part) ? { id: part } : { text: part }))
+    .map((part) =>
+      props.linkedIds.includes(part) ? { id: part } : { text: part },
+    );
 }
 </script>
 
@@ -64,9 +76,14 @@ function segments(text) {
         <RouterLink
           :to="`/user/${thread.author}`"
           class="ml-2 text-bbs-bright hover:underline"
-        >{{ thread.author }}</RouterLink>
-        <span v-if="thread.nickname" class="text-bbs-dim">({{ thread.nickname }})</span>
-        <span class="float-right text-bbs-dim">看板 <span class="text-bbs-accent">{{ thread.board }}</span></span>
+          >{{ thread.author }}</RouterLink
+        >
+        <span v-if="thread.nickname" class="text-bbs-dim"
+          >({{ thread.nickname }})</span
+        >
+        <span class="float-right text-bbs-dim"
+          >看板 <span class="text-bbs-accent">{{ thread.board }}</span></span
+        >
       </div>
       <div>
         <span class="text-bbs-dim">標題</span>
@@ -79,7 +96,26 @@ function segments(text) {
     </header>
 
     <!-- 主文(pre-wrap 容器,標記全部寫在同一行以免多出空白) -->
-    <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(part, pi) in contentParts" :key="pi"><span v-if="part.hidden" class="spoiler" :class="{ 'spoiler-open': revealed[pi] }" @click="revealed[pi] = !revealed[pi]">{{ part.text }}</span><template v-else><template v-for="(seg, i) in segments(part.text)" :key="`${pi}-${i}`"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></template></template></div>
+    <div class="whitespace-pre-wrap break-words px-3 py-3">
+      <template v-for="(part, pi) in contentParts" :key="pi"
+        ><span
+          v-if="part.hidden"
+          class="spoiler"
+          :class="{ 'spoiler-open': revealed[pi] }"
+          @click="revealed[pi] = !revealed[pi]"
+          >{{ part.text }}</span
+        ><template v-else
+          ><template v-for="(seg, i) in segments(part.text)" :key="`${pi}-${i}`"
+            ><RouterLink
+              v-if="seg.id"
+              :to="`/user/${seg.id}`"
+              class="text-bbs-link hover:underline"
+              >{{ seg.id }}</RouterLink
+            ><span v-else>{{ seg.text }}</span></template
+          ></template
+        ></template
+      >
+    </div>
 
     <!-- 內文附圖 -->
     <div
@@ -92,7 +128,11 @@ function segments(text) {
         :src="img.src"
         :alt="img.alt"
         class="mx-auto border border-bbs-border"
-        :class="zoomedImage === i ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+        :class="
+          zoomedImage === i
+            ? 'w-[180%] max-w-none cursor-zoom-out'
+            : 'max-w-full cursor-zoom-in'
+        "
         @click="zoomedImage = zoomedImage === i ? null : i"
       />
     </div>
@@ -103,7 +143,9 @@ function segments(text) {
       :key="`chat-${ci}`"
       class="mx-3 mb-3 border border-bbs-border px-3 py-2"
     >
-      <div v-if="chat.caption" class="mb-1 text-bbs-dim">{{ chat.caption }}</div>
+      <div v-if="chat.caption" class="mb-1 text-bbs-dim">
+        {{ chat.caption }}
+      </div>
       <div
         v-if="chat.image"
         class="overflow-auto"
@@ -113,7 +155,11 @@ function segments(text) {
           :src="chat.image"
           :alt="chat.caption"
           class="mx-auto"
-          :class="zoomedChat === ci ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+          :class="
+            zoomedChat === ci
+              ? 'w-[180%] max-w-none cursor-zoom-out'
+              : 'max-w-full cursor-zoom-in'
+          "
           @click="zoomedChat = zoomedChat === ci ? null : ci"
         />
       </div>
@@ -121,7 +167,11 @@ function segments(text) {
         <div v-for="(line, li) in chat.lines" :key="li" class="flex gap-2">
           <span class="shrink-0 text-bbs-accent">{{ line.speaker }}</span>
           <span class="text-bbs-dim">:</span>
-          <span class="break-words" :class="line.redacted ? 'text-bbs-dim' : ''">{{ line.text }}</span>
+          <span
+            class="break-words"
+            :class="line.redacted ? 'text-bbs-dim' : ''"
+            >{{ line.text }}</span
+          >
         </div>
       </template>
     </div>
@@ -134,22 +184,47 @@ function segments(text) {
       class="mx-3 mb-3 block border border-dashed border-bbs-border px-3 py-2 hover:bg-bbs-sel hover:text-bbs-bright"
     >
       <div class="text-bbs-dim">※ 引述【{{ quote.title }}】</div>
-      <div v-for="(line, i) in quote.lines" :key="i" class="whitespace-pre-wrap">{{ line }}</div>
+      <div
+        v-for="(line, i) in quote.lines"
+        :key="i"
+        class="whitespace-pre-wrap"
+      >
+        {{ line }}
+      </div>
     </RouterLink>
 
     <!-- 推文列表(劇情推文在前,訪客推文在後;訪客 ID 用暗色微妙區分)
          時間戳獨立放每則右下,窄螢幕不與內文擠同一行 -->
-    <footer v-if="allPushes.length" class="border-t border-bbs-border px-3 py-2">
-      <div v-for="(push, i) in allPushes" :key="i" class="py-0.5">
+    <footer
+      v-if="allPushes.length"
+      class="border-t border-bbs-border px-3 py-2"
+    >
+      <div
+        v-for="(push, i) in allPushes"
+        :key="i"
+        class="py-0.5 md:flex justify-between"
+      >
         <div class="flex gap-2">
-          <span :class="pushMark[push.type].class">{{ pushMark[push.type].symbol }}</span>
+          <span :class="pushMark[push.type].class">{{
+            pushMark[push.type].symbol
+          }}</span>
           <RouterLink
             :to="`/user/${push.user}`"
             :class="push.isVisitor ? 'text-bbs-dim' : 'text-bbs-accent'"
             class="hover:underline"
-          >{{ push.user }}</RouterLink>
+            >{{ push.user }}</RouterLink
+          >
           <span class="text-bbs-dim">:</span>
-          <span class="flex-1 break-words"><template v-for="(seg, j) in segments(push.text)" :key="j"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></span>
+          <span class="flex-1 break-words"
+            ><template v-for="(seg, j) in segments(push.text)" :key="j"
+              ><RouterLink
+                v-if="seg.id"
+                :to="`/user/${seg.id}`"
+                class="text-bbs-link hover:underline"
+                >{{ seg.id }}</RouterLink
+              ><span v-else>{{ seg.text }}</span></template
+            ></span
+          >
         </div>
         <div class="text-right text-bbs-dim">{{ push.time }}</div>
       </div>
@@ -170,7 +245,12 @@ function segments(text) {
           placeholder="輸入推文"
           class="min-w-0 flex-1 border-b border-bbs-border bg-transparent text-bbs-fg outline-none placeholder:text-bbs-dim focus:border-bbs-accent"
         />
-        <button type="submit" class="shrink-0 text-bbs-link hover:text-bbs-bright">[送出]</button>
+        <button
+          type="submit"
+          class="shrink-0 text-bbs-link hover:text-bbs-bright"
+        >
+          [送出]
+        </button>
       </form>
     </div>
   </article>
@@ -186,7 +266,7 @@ function segments(text) {
   color: inherit;
 }
 .spoiler::selection {
-  color: theme('colors.bbs.fg');
-  background-color: theme('colors.bbs.sel');
+  color: theme("colors.bbs.fg");
+  background-color: theme("colors.bbs.sel");
 }
 </style>
