@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import MessageThread from './MessageThread.vue'
 import {
   krowCoordMail,
@@ -13,12 +13,27 @@ import { useFinaleStore } from '../stores/finale.js'
 
 const finale = useFinaleStore()
 
+// 一句一句傳:回覆 → 照片,依序直接出現(無淡入)。重訪用短節奏。
+// 照片出現的那一拍才記 photoSeen,站頭「新訊息 2」隨之亮起。
+const beat = ref(0)
+let timers = []
+function runBeats(times) {
+  timers.forEach(clearTimeout)
+  beat.value = 0
+  timers = times.map((ms, i) =>
+    setTimeout(() => {
+      beat.value = i + 1
+      if (i === 1) finale.markPhotoSeen()
+    }, ms),
+  )
+}
+
 onMounted(() => {
   // 打開信匣 = 點開了 k_r_o_w 的新訊息,站頭通知即消
   finale.markMailSeen()
-  // 座標已解的重訪:照片就在畫面上,補記顯示狀態
-  if (finale.coordsSolved) finale.markPhotoSeen()
+  if (finale.coordsSolved) runBeats([200, 600])
 })
+onUnmounted(() => timers.forEach(clearTimeout))
 
 // ── 座標輸入 ──
 const coordInput = ref('')
@@ -28,8 +43,7 @@ function submitCoords() {
   if (matchesBurialCoords(coordInput.value)) {
     rejected.value = false
     finale.solveCoords()
-    // 回覆與照片直接出現;照片顯示後站頭才亮「新訊息 2」
-    finale.markPhotoSeen()
+    runBeats([1200, 3200])
   } else {
     rejected.value = true
   }
@@ -37,7 +51,7 @@ function submitCoords() {
 
 const krowMessages = computed(() => {
   const list = [{ id: 'coord-ask', ...krowCoordMail }]
-  if (finale.coordsSolved) {
+  if (finale.coordsSolved && beat.value >= 1) {
     list.push({
       id: 'coord-reply',
       from: krowCoordReply.from,
@@ -105,8 +119,11 @@ const zoomed = ref(false)
       <p v-if="rejected" class="mt-3 text-bbs-boo">{{ coordRejectText }}</p>
     </div>
 
-    <!-- 附檔照片(image 為空時渲染佔位框,補圖後自動改渲染圖檔) -->
-    <div v-if="finale.coordsSolved" class="border border-bbs-border bg-bbs-panel">
+    <!-- 附檔照片 -->
+    <div
+      v-if="finale.coordsSolved && beat >= 2"
+      class="border border-bbs-border bg-bbs-panel"
+    >
       <div class="border-b border-bbs-border px-3 py-1 text-bbs-dim">
         {{ krowCoordReply.photo.caption }}
       </div>

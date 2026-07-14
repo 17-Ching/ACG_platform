@@ -114,8 +114,6 @@ export const evidenceItems = [
 // ── 結局 A|揭發(回信給 KKcat)──
 
 export const endingExpose = {
-  // 沒選的那封:停在未讀
-  unreadLetter: { ...justiceLetter, read: false },
   // 新聞跑馬燈:只報導「事情浮上檯面」,結果留白
   ticker: [
     "【快訊】網路流傳疑遭封存之案件文件 輿論譁然",
@@ -137,8 +135,6 @@ export const endingExpose = {
 // ── 結局 B|收封口費(回信給 justice6767)──
 
 export const endingSilence = {
-  // 沒選的那封:停在未讀
-  unreadLetter: { ...kkcatLetter, read: false },
   receipt: [
     "┌──────────────────",
     "│ 轉帳入帳通知",
