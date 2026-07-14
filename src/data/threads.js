@@ -16,6 +16,7 @@ import {
 import { oldPosts } from "./oldPosts.js";
 import { boardPosts } from "./boardPosts.js";
 import { profiles } from "./profiles.js";
+import newsScan from "../assets/news.png";
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
@@ -141,7 +142,20 @@ const dossier = {
     "所以問題來了:",
     "一個兩年前就失蹤的人,",
     "是誰在幾天前,重設了他的密碼、登入、然後發文?",
+    "",
+    "── 補充 ──",
+    "",
+    "有兩樣東西我撈到了邊,撈不到內容,一併放著:",
+    "· 一段被清掉的站內訊息,只搶救回半行殘影:",
+    "  「……我另外留了一份,鎖在……」後面沒了。",
+    "· 案件系統裡掛著一筆加密編碼:格式看得到,內容打不開,",
+    "  跟那個協尋案是同一個案號。",
+    "",
+    "另外,那則地方新聞的原版網頁,路人翻拍了一張給我。",
+    "畫質就這樣。自己看。",
   ].join("\n"),
+  // 新聞網頁翻拍(關卡 6 擴充):線索在圖內,頁面文字不重複拼出
+  images: [{ src: newsScan, alt: "地方新聞網頁翻拍" }],
   // 文末引用區塊:引個資頁的欄位原值,整塊可點回 /user/k_r_o_w
   quotes: [
     {
@@ -229,6 +243,13 @@ const dossier = {
       type: "push",
       user: "data_digger",
       text: "如果有人手上有那晚的東西,把時間、地點對一對。",
+      time: fmtMD(storyNow),
+    },
+    // 極軟提示:只指向圖上的污漬,不拼字、不指名
+    {
+      type: "push",
+      user: "abc999",
+      text: "那個污漬是滴到了啥",
       time: fmtMD(storyNow),
     },
   ],

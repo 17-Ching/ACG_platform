@@ -25,6 +25,9 @@ const allPushes = computed(() => [...(props.thread.pushes ?? []), ...props.visit
 // 文末引用區塊:支援 thread.quotes(陣列)與舊式 thread.quote(單筆)
 const quoteList = computed(() => props.thread.quotes ?? (props.thread.quote ? [props.thread.quote] : []))
 
+// 內文附圖(thread.images):點圖放大,同一時間只放大一張
+const zoomedImage = ref(null)
+
 const draft = ref('')
 
 function submit() {
@@ -72,6 +75,22 @@ function segments(text) {
 
     <!-- 主文(pre-wrap 容器,標記全部寫在同一行以免多出空白) -->
     <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(seg, i) in segments(thread.content)" :key="i"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></div>
+
+    <!-- 內文附圖 -->
+    <div
+      v-for="(img, i) in thread.images ?? []"
+      :key="i"
+      class="overflow-auto px-3 pb-3"
+      :class="zoomedImage === i ? 'max-h-[80vh]' : ''"
+    >
+      <img
+        :src="img.src"
+        :alt="img.alt"
+        class="mx-auto border border-bbs-border"
+        :class="zoomedImage === i ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+        @click="zoomedImage = zoomedImage === i ? null : i"
+      />
+    </div>
 
     <!-- 文末引用區塊:{ title, lines, to },整塊可點 -->
     <RouterLink
