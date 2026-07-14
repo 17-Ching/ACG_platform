@@ -67,3 +67,7 @@ export const BACKUP_POST_DATE = new Date(2014, 8, 6) // 發文日 = 結案日 + 
 
 // 終局座標位移(總表 第七節):緯度往上加,經度不動
 export const COORD_SHIFT_LAT = 0.0829
+
+// 棄屍座標 = 會館座標 + 位移(總表 第七節「棄屍座標」,推導不另抄值)
+const [venueLat, venueLon] = PHOTO_GPS.split(', ')
+export const BURIAL_COORDS = `${(Number(venueLat) + COORD_SHIFT_LAT).toFixed(6)}, ${venueLon}`

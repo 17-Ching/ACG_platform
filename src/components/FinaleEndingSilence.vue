@@ -4,8 +4,9 @@ import MessageThread from './MessageThread.vue'
 import FinaleOutro from './FinaleOutro.vue'
 import { endingSilence, evidenceItems } from '../data/finale.js'
 
-// 逐段浮現:入帳 → 清單刪除 → 兩則未讀 → 新懸賞文 → KKcat 最後一篇 → 片尾
-const BEATS = [500, 2200, 5200, 8200, 13200, 16200, 19200]
+// 逐段浮現:沒回的那封(未讀)→ 入帳 → 清單刪除 → 兩則未讀 →
+// 飄版新懸賞文 → KKcat 最後一篇 → 片尾
+const BEATS = [500, 2200, 4200, 7200, 10200, 15200, 18200, 21200]
 const beat = ref(0)
 let timers = []
 
@@ -16,25 +17,31 @@ onUnmounted(() => timers.forEach(clearTimeout))
 
 const shownUnread = computed(() => {
   const list = []
-  if (beat.value >= 3) list.push({ id: 'kk-1', ...endingSilence.unread[0] })
-  if (beat.value >= 4) list.push({ id: 'kk-2', ...endingSilence.unread[1] })
+  if (beat.value >= 1) list.push({ id: 'letter', ...endingSilence.unreadLetter })
+  if (beat.value >= 4) list.push({ id: 'kk-1', ...endingSilence.unread[0] })
+  if (beat.value >= 5) list.push({ id: 'kk-2', ...endingSilence.unread[1] })
   return list
 })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
+    <!-- 沒回的那封信 + 後來的訊息,全部停在未讀 -->
+    <Transition name="fade">
+      <MessageThread v-if="beat >= 1" :messages="shownUnread" />
+    </Transition>
+
     <!-- 錢到帳,畫面安靜 -->
     <Transition name="fade">
       <div
-        v-if="beat >= 1"
+        v-if="beat >= 2"
         class="whitespace-pre-wrap border border-bbs-border bg-bbs-panel px-3 py-2"
       >{{ endingSilence.receipt }}</div>
     </Transition>
 
     <!-- 手上的東西,一項一項不見 -->
     <Transition name="fade">
-      <div v-if="beat >= 2" class="border border-bbs-border bg-bbs-panel">
+      <div v-if="beat >= 3" class="border border-bbs-border bg-bbs-panel">
         <div class="border-b border-bbs-border px-3 py-1 text-bbs-accent">
           ┌ 暫存檔 ─ 你手上的東西
         </div>
@@ -48,14 +55,9 @@ const shownUnread = computed(() => {
       </div>
     </Transition>
 
-    <!-- KKcat 的訊息,停在未讀 -->
+    <!-- 過一陣子,飄版最底出現另一個沉寂帳號的新懸賞文 -->
     <Transition name="fade">
-      <MessageThread v-if="beat >= 3" :messages="shownUnread" />
-    </Transition>
-
-    <!-- 過一陣子,論壇上出現另一個沉寂帳號的新懸賞文 -->
-    <Transition name="fade">
-      <article v-if="beat >= 5" class="border border-bbs-border bg-bbs-panel">
+      <article v-if="beat >= 6" class="border border-bbs-border bg-bbs-panel">
         <header class="border-b border-bbs-border px-3 py-2">
           <div>
             <span class="text-bbs-dim">作者</span>
@@ -82,7 +84,7 @@ const shownUnread = computed(() => {
 
     <!-- KKcat 最後一篇公開發文 -->
     <Transition name="fade">
-      <article v-if="beat >= 6" class="border border-bbs-border bg-bbs-panel">
+      <article v-if="beat >= 7" class="border border-bbs-border bg-bbs-panel">
         <header class="border-b border-bbs-border px-3 py-2">
           <div>
             <span class="text-bbs-dim">作者</span>
@@ -98,7 +100,7 @@ const shownUnread = computed(() => {
     </Transition>
 
     <Transition name="fade">
-      <FinaleOutro v-if="beat >= 7" />
+      <FinaleOutro v-if="beat >= 8" />
     </Transition>
   </div>
 </template>

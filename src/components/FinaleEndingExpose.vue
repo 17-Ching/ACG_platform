@@ -4,8 +4,9 @@ import MessageThread from './MessageThread.vue'
 import FinaleOutro from './FinaleOutro.vue'
 import { endingExpose } from '../data/finale.js'
 
-// 逐段浮現:跑馬燈 → KKcat 兩則 → k_r_o_w 名片 → 狀態轉離線 → KKcat 名片 → 片尾
-const BEATS = [800, 3000, 5200, 8200, 12200, 15200, 18200]
+// 逐段浮現:沒回的那封(未讀)→ 跑馬燈 → KKcat 兩則 → k_r_o_w 名片 →
+// 狀態轉離線 → KKcat 名片 → 片尾
+const BEATS = [600, 2600, 5000, 7200, 10200, 14200, 17200, 20200]
 const beat = ref(0)
 let timers = []
 
@@ -18,28 +19,33 @@ const tickerText = computed(() => endingExpose.ticker.join('　──　'))
 
 const shownMessages = computed(() => {
   const list = []
-  if (beat.value >= 2) list.push({ id: 'kk-1', ...endingExpose.messages[0] })
-  if (beat.value >= 3) list.push({ id: 'kk-2', ...endingExpose.messages[1] })
+  if (beat.value >= 3) list.push({ id: 'kk-1', ...endingExpose.messages[0] })
+  if (beat.value >= 4) list.push({ id: 'kk-2', ...endingExpose.messages[1] })
   return list
 })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
+    <!-- 沒回的那封信,停在未讀 -->
+    <Transition name="fade">
+      <MessageThread v-if="beat >= 1" :messages="[endingExpose.unreadLetter]" />
+    </Transition>
+
     <!-- 新聞跑馬燈 -->
     <Transition name="fade">
-      <div v-if="beat >= 1" class="overflow-hidden border border-bbs-border bg-bbs-panel py-1">
+      <div v-if="beat >= 2" class="overflow-hidden border border-bbs-border bg-bbs-panel py-1">
         <div class="ticker whitespace-nowrap text-bbs-warn">{{ tickerText }}</div>
       </div>
     </Transition>
 
     <Transition name="fade">
-      <MessageThread v-if="beat >= 2" :messages="shownMessages" />
+      <MessageThread v-if="beat >= 3" :messages="shownMessages" />
     </Transition>
 
     <!-- k_r_o_w 帳號狀態 -->
     <Transition name="fade">
-      <div v-if="beat >= 4" class="border border-bbs-border bg-bbs-panel">
+      <div v-if="beat >= 5" class="border border-bbs-border bg-bbs-panel">
         <div class="border-b border-bbs-border px-3 py-1 text-bbs-accent">
           ┌ 使用者名片 ─ k_r_o_w
         </div>
@@ -47,7 +53,7 @@ const shownMessages = computed(() => {
           <dt class="text-bbs-dim">目前狀態</dt>
           <dd>
             <Transition name="fade" mode="out-in">
-              <span v-if="beat < 5" class="text-bbs-push">● 在線上</span>
+              <span v-if="beat < 6" class="text-bbs-push">● 在線上</span>
               <span v-else class="text-bbs-dim">○ 離線</span>
             </Transition>
           </dd>
@@ -57,7 +63,7 @@ const shownMessages = computed(() => {
 
     <!-- KKcat 名片:簽名檔悄悄換了一句 -->
     <Transition name="fade">
-      <div v-if="beat >= 6" class="border border-bbs-border bg-bbs-panel">
+      <div v-if="beat >= 7" class="border border-bbs-border bg-bbs-panel">
         <div class="border-b border-bbs-border px-3 py-1 text-bbs-accent">
           ┌ 使用者名片 ─ KKcat
         </div>
@@ -73,7 +79,7 @@ const shownMessages = computed(() => {
     </Transition>
 
     <Transition name="fade">
-      <FinaleOutro v-if="beat >= 7" />
+      <FinaleOutro v-if="beat >= 8" />
     </Transition>
   </div>
 </template>
