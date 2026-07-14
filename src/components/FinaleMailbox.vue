@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import MessageThread from './MessageThread.vue'
 import {
   krowCoordMail,
@@ -13,19 +13,12 @@ import { useFinaleStore } from '../stores/finale.js'
 
 const finale = useFinaleStore()
 
-// 逐段浮現:回覆 → 照片。已解過(重訪)用短節奏
-const beat = ref(0)
-let timers = []
-function runBeats(times) {
-  timers.forEach(clearTimeout)
-  timers = times.map((ms, i) => setTimeout(() => (beat.value = i + 1), ms))
-}
 onMounted(() => {
   // 打開信匣 = 點開了 k_r_o_w 的新訊息,站頭通知即消
   finale.markMailSeen()
-  if (finale.coordsSolved) runBeats([300, 900])
+  // 座標已解的重訪:照片就在畫面上,補記顯示狀態
+  if (finale.coordsSolved) finale.markPhotoSeen()
 })
-onUnmounted(() => timers.forEach(clearTimeout))
 
 // ── 座標輸入 ──
 const coordInput = ref('')
@@ -35,7 +28,8 @@ function submitCoords() {
   if (matchesBurialCoords(coordInput.value)) {
     rejected.value = false
     finale.solveCoords()
-    runBeats([1500, 3500])
+    // 回覆與照片直接出現;照片顯示後站頭才亮「新訊息 2」
+    finale.markPhotoSeen()
   } else {
     rejected.value = true
   }
@@ -43,7 +37,7 @@ function submitCoords() {
 
 const krowMessages = computed(() => {
   const list = [{ id: 'coord-ask', ...krowCoordMail }]
-  if (finale.coordsSolved && beat.value >= 1) {
+  if (finale.coordsSolved) {
     list.push({
       id: 'coord-reply',
       from: krowCoordReply.from,
@@ -112,34 +106,23 @@ const zoomed = ref(false)
     </div>
 
     <!-- 附檔照片(image 為空時渲染佔位框,補圖後自動改渲染圖檔) -->
-    <Transition name="fade">
-      <div v-if="finale.coordsSolved && beat >= 2" class="border border-bbs-border bg-bbs-panel">
-        <div class="border-b border-bbs-border px-3 py-1 text-bbs-dim">
-          {{ krowCoordReply.photo.caption }}
-        </div>
-        <div class="overflow-auto px-3 py-3" :class="zoomed ? 'max-h-[80vh]' : ''">
-          <img
-            v-if="krowCoordReply.photo.image"
-            :src="krowCoordReply.photo.image"
-            :alt="krowCoordReply.photo.alt"
-            class="mx-auto"
-            :class="zoomed ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
-            @click="zoomed = !zoomed"
-          />
-          <div v-else class="flex aspect-[4/3] items-center justify-center bg-black text-bbs-dim">
-            (相片)
-          </div>
+    <div v-if="finale.coordsSolved" class="border border-bbs-border bg-bbs-panel">
+      <div class="border-b border-bbs-border px-3 py-1 text-bbs-dim">
+        {{ krowCoordReply.photo.caption }}
+      </div>
+      <div class="overflow-auto px-3 py-3" :class="zoomed ? 'max-h-[80vh]' : ''">
+        <img
+          v-if="krowCoordReply.photo.image"
+          :src="krowCoordReply.photo.image"
+          :alt="krowCoordReply.photo.alt"
+          class="mx-auto"
+          :class="zoomed ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+          @click="zoomed = !zoomed"
+        />
+        <div v-else class="flex aspect-[4/3] items-center justify-center bg-black text-bbs-dim">
+          (相片)
         </div>
       </div>
-    </Transition>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active {
-  transition: opacity 2s ease;
-}
-.fade-enter-from {
-  opacity: 0;
-}
-</style>

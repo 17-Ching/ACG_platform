@@ -11,6 +11,7 @@ const REQUIRED_KEYS = ['mail:k_r_o_w', `unlock:${DOSSIER_THREAD}`, `unlock:${BAC
 // 終局信匣的進度 key(存在 progress store)
 const SEEN_KROW_KEY = 'seen:krow-mail' // 點開過 k_r_o_w 的新訊息
 const COORDS_KEY = 'coords:burial' // 座標答對
+const PHOTO_KEY = 'seen:photo' // 照片已在信匣顯示過(通知 2 以此為準)
 const LETTERS_KEY = 'letters:open' // 點開過「新訊息 (2)」,信匣刷新成兩封信
 
 // 兩個結局的代號:expose = 公開證據,silence = 刪除證據收下錢
@@ -29,13 +30,15 @@ export const useFinaleStore = defineStore('finale', () => {
   const evidenceReady = computed(() => REQUIRED_KEYS.every((key) => progress.isSolved(key)))
 
   const coordsSolved = computed(() => progress.isSolved(COORDS_KEY))
+  const photoSeen = computed(() => progress.isSolved(PHOTO_KEY))
   const lettersOpened = computed(() => progress.isSolved(LETTERS_KEY))
 
   // 站頭收件匣的未讀數:0 = 收件匣、1 = k_r_o_w 的信、2 = 兩封新信
+  // 「新訊息 2」要等照片在信匣顯示過(photoSeen)才亮
   const newMailCount = computed(() => {
     if (!evidenceReady.value || choice.value) return 0
     if (!progress.isSolved(SEEN_KROW_KEY)) return 1
-    if (coordsSolved.value && !lettersOpened.value) return 2
+    if (photoSeen.value && !lettersOpened.value) return 2
     return 0
   })
 
@@ -45,6 +48,10 @@ export const useFinaleStore = defineStore('finale', () => {
 
   function solveCoords() {
     progress.markSolved(COORDS_KEY)
+  }
+
+  function markPhotoSeen() {
+    progress.markSolved(PHOTO_KEY)
   }
 
   function openLetters() {
@@ -63,10 +70,12 @@ export const useFinaleStore = defineStore('finale', () => {
     choice,
     evidenceReady,
     coordsSolved,
+    photoSeen,
     lettersOpened,
     newMailCount,
     markMailSeen,
     solveCoords,
+    markPhotoSeen,
     openLetters,
     choose,
     rechoose,
