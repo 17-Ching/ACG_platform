@@ -11,6 +11,18 @@
 import { fmtMDY, fmtMD } from './anchors.js'
 
 const d = (m, day) => new Date(2016, m - 1, day)
+
+// 推文時間:依樓層由發文時刻往後推,跨午夜會自動進位日期
+const PUSH_OFFSET_MINUTES = [6, 17, 35, 58, 84, 117]
+const pushStamp = (date, baseClock, minutesLater) => {
+  const [h, m] = baseClock.split(':').map(Number)
+  const total = h * 60 + m + minutesLater
+  const day = new Date(date.getTime() + Math.floor(total / 1440) * 86400000)
+  const hh = String(Math.floor((total % 1440) / 60)).padStart(2, '0')
+  const mm = String(total % 60).padStart(2, '0')
+  return `${fmtMD(day)} ${hh}:${mm}`
+}
+
 const post = (id, board, author, title, date, clock, content, pushes = []) => ({
   id,
   board,
@@ -19,7 +31,12 @@ const post = (id, board, author, title, date, clock, content, pushes = []) => ({
   date,
   time: `${fmtMDY(date)} ${clock}`,
   content: content.join('\n'),
-  pushes: pushes.map(([type, user, text]) => ({ type, user, text, time: fmtMD(date) })),
+  pushes: pushes.map(([type, user, text], i) => ({
+    type,
+    user,
+    text,
+    time: pushStamp(date, clock, PUSH_OFFSET_MINUTES[i % PUSH_OFFSET_MINUTES.length] + 120 * Math.floor(i / PUSH_OFFSET_MINUTES.length)),
+  })),
 })
 
 export const boardPosts = [

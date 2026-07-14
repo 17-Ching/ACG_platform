@@ -137,18 +137,21 @@ function segments(text) {
       <div v-for="(line, i) in quote.lines" :key="i" class="whitespace-pre-wrap">{{ line }}</div>
     </RouterLink>
 
-    <!-- 推文列表(劇情推文在前,訪客推文在後;訪客 ID 用暗色微妙區分) -->
+    <!-- 推文列表(劇情推文在前,訪客推文在後;訪客 ID 用暗色微妙區分)
+         時間戳獨立放每則右下,窄螢幕不與內文擠同一行 -->
     <footer v-if="allPushes.length" class="border-t border-bbs-border px-3 py-2">
-      <div v-for="(push, i) in allPushes" :key="i" class="flex gap-2">
-        <span :class="pushMark[push.type].class">{{ pushMark[push.type].symbol }}</span>
-        <RouterLink
-          :to="`/user/${push.user}`"
-          :class="push.isVisitor ? 'text-bbs-dim' : 'text-bbs-accent'"
-          class="hover:underline"
-        >{{ push.user }}</RouterLink>
-        <span class="text-bbs-dim">:</span>
-        <span class="flex-1 break-words"><template v-for="(seg, j) in segments(push.text)" :key="j"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></span>
-        <span class="shrink-0 text-bbs-dim">{{ push.time }}</span>
+      <div v-for="(push, i) in allPushes" :key="i" class="py-0.5">
+        <div class="flex gap-2">
+          <span :class="pushMark[push.type].class">{{ pushMark[push.type].symbol }}</span>
+          <RouterLink
+            :to="`/user/${push.user}`"
+            :class="push.isVisitor ? 'text-bbs-dim' : 'text-bbs-accent'"
+            class="hover:underline"
+          >{{ push.user }}</RouterLink>
+          <span class="text-bbs-dim">:</span>
+          <span class="flex-1 break-words"><template v-for="(seg, j) in segments(push.text)" :key="j"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></span>
+        </div>
+        <div class="text-right text-bbs-dim">{{ push.time }}</div>
       </div>
     </footer>
     <footer v-else class="border-t border-bbs-border px-3 py-2 text-bbs-dim">

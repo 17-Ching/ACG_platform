@@ -24,6 +24,9 @@ import newsScan from "../assets/news.png";
 import reportScan from "../assets/report.webp";
 import chatShot from "../assets/chat_confession.png";
 
+// 推文時間戳:故事當下(2016/08/29)的某個時刻
+const at = (clock) => `${fmtMD(storyNow)} ${clock}`;
+
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
 const bounty = {
@@ -53,63 +56,63 @@ const bounty = {
       type: "push",
       user: "rich_hunter",
       text: "又一個釣魚文 zzz",
-      time: fmtMD(storyNow),
+      time: at("00:12"),
     },
     {
       type: "push",
       user: "rich_hunter",
       text: "不過懸賞金多少先講",
-      time: fmtMD(storyNow),
+      time: at("00:13"),
     },
     {
       type: "push",
       user: "momo_2",
       text: "k_r_o_w?這 ID 我好像有印象欸",
-      time: fmtMD(storyNow),
+      time: at("00:31"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "……這個帳號我認識。他不是會開這種玩笑的人。",
-      time: fmtMD(storyNow),
+      time: at("00:47"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "而且他兩年沒上線了。",
-      time: fmtMD(storyNow),
+      time: at("00:48"),
     },
     {
       type: "push",
       user: "路人",
       text: "樓上認真的?起雞皮疙瘩",
-      time: fmtMD(storyNow),
+      time: at("01:03"),
     },
     {
       type: "push",
       user: "abc999",
       text: "反正閒著,我玩玩看。回到我開始的地方是三小",
-      time: fmtMD(storyNow),
+      time: at("09:26"),
     },
     {
       type: "push",
       user: "momo_2",
       text: "他自己最早的文?點他 ID 看發文紀錄啊",
-      time: fmtMD(storyNow),
+      time: at("09:41"),
     },
     // 關卡 5 軟提示(依總表新規則調整,不明寫算式)
     {
       type: "push",
       user: "KKcat",
       text: "檔名從來不是隨便取的。時、分,還有座標的整數。加起來。",
-      time: fmtMD(storyNow),
+      time: at("20:15"),
     },
     // 關卡 6 入口軟提示:指向八卦板的上鎖文章
     {
       type: "push",
       user: "momo_2",
       text: "話說八卦板有人把這 ID 的底查出來了 結果文章鎖著 是在演哪齣",
-      time: fmtMD(storyNow),
+      time: at("21:47"),
     },
   ],
 };
@@ -169,69 +172,69 @@ const dossier = {
       type: "push",
       user: "momo_2",
       text: "等等 所以發文的不是他本人?",
-      time: fmtMD(storyNow),
+      time: at("21:18"),
     },
     {
       type: "push",
       user: "data_digger",
       text: "我沒說。我只說 IP 和密碼被動過。",
-      time: fmtMD(storyNow),
+      time: at("21:20"),
     },
     {
       type: "push",
       user: "data_digger",
       text: "也可能是他自己。我不知道。我只把資料放這。",
-      time: fmtMD(storyNow),
+      time: at("21:21"),
     },
     {
       type: "push",
       user: "路人",
       text: "那個新聞我有印象…原來就是他喔 幹 有點難過",
-      time: fmtMD(storyNow),
+      time: at("21:29"),
     },
     {
       type: "push",
       user: "rich_hunter",
       text: "所以到底有沒有懸賞金啦(怕",
-      time: fmtMD(storyNow),
+      time: at("21:33"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "……你們現在才知道他失蹤。",
-      time: fmtMD(storyNow),
+      time: at("21:40"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "我兩年前就跟你們說過,他不是會消失的人。",
-      time: fmtMD(storyNow),
+      time: at("21:41"),
     },
-    { type: "push", user: "KKcat", text: "沒人信。", time: fmtMD(storyNow) },
+    { type: "push", user: "KKcat", text: "沒人信。", time: at("21:41") },
     {
       type: "push",
       user: "momo_2",
       text: "KKcat 你先冷靜 你是不是知道什麼",
-      time: fmtMD(storyNow),
+      time: at("21:45"),
     },
     // 以下三則為關卡 7 的追查線頭(設計文件之外的補充,data_digger 維持只擺事實)
     {
       type: "push",
       user: "momo_2",
       text: "所以那個案子呢 就這樣不了了之?",
-      time: fmtMD(storyNow),
+      time: at("21:52"),
     },
     {
       type: "push",
       user: "data_digger",
       text: "通報後沒幾天就沒下文了。為什麼,自己想。",
-      time: fmtMD(storyNow),
+      time: at("21:55"),
     },
     {
       type: "push",
       user: "data_digger",
       text: "如果有人手上有那晚的東西,把時間、地點對一對。",
-      time: fmtMD(storyNow),
+      time: at("21:58"),
     },
   ],
 };
@@ -258,14 +261,14 @@ const newsRepost = {
       type: "arrow",
       user: "路人",
       text: "這則後來沒有後續了。就這樣沒了。",
-      time: fmtMD(storyNow),
+      time: at("22:06"),
     },
     // 極軟提示:只指向圖上的污漬,不拼字、不指名
     {
       type: "push",
       user: "abc999",
       text: "那個污漬是滴到了啥",
-      time: fmtMD(storyNow),
+      time: at("22:24"),
     },
   ],
 };
@@ -301,32 +304,32 @@ const caseClosure = {
       type: "push",
       user: "KKcat",
       text: "「自行返家」。",
-      time: fmtMD(storyNow),
+      time: at("23:11"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "他要是返家了,還會叫我不要找他嗎。",
-      time: fmtMD(storyNow),
+      time: at("23:12"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "他根本沒有家可以回。",
-      time: fmtMD(storyNow),
+      time: at("23:14"),
     },
     // 關卡 7.5 軟提示:指向格式與「重用一路解過的碼」,不列答案
     {
       type: "push",
       user: "data_digger",
       text: "塗黑蓋得住數字,蓋不住長度。",
-      time: fmtMD(storyNow),
+      time: at("23:22"),
     },
     {
       type: "push",
       user: "KKcat",
       text: "你一路解開的那些數字,不是用完就丟的。",
-      time: fmtMD(storyNow),
+      time: at("23:25"),
     },
   ],
 };
@@ -334,6 +337,7 @@ const caseClosure = {
 // 飄版目擊文(night_hiker,2014 舊文):上鎖文對話截圖「飄版有人 po 說
 // 看到黑影」指的就是這篇。中段反白段落用 contentParts 的 hidden 部分呈現,
 // 位移值引用總表「終局座標」;justice6767 推文照提供版本。
+// 推文時間與對話截圖對齊:小開 00:36 下令壓文,justice6767 之後才出現。
 const ghostSighting = {
   id: "218", // 登錄於總表「隱藏頁/特殊路由一覽」
   board: "飄版",
@@ -377,37 +381,37 @@ const ghostSighting = {
       type: "push",
       user: "aaa123",
       text: "樓主別嚇我 起雞皮疙瘩",
-      time: "08/30",
+      time: "08/30 23:58",
     },
     {
       type: "push",
       user: "mountain_cat",
       text: "那間會館本來就怪 之前也有人說晚上有聲音",
-      time: "08/31",
+      time: "08/31 00:16",
     },
     {
       type: "push",
       user: "justice6767",
       text: "三小啦 看太多鬼片喔 挖土=鬧鬼?農夫都是鬼囉 zzz",
-      time: "08/31",
+      time: "08/31 00:44",
     },
     {
       type: "push",
       user: "justice6767",
       text: "這種文也信 難怪台灣鬼故事永遠寫不完 笑死",
-      time: "08/31",
+      time: "08/31 00:45",
     },
     {
       type: "push",
       user: "night_hiker",
       text: "我知道很扯…但我真的沒騙人 就記錄一下",
-      time: "08/31",
+      time: "08/31 01:02",
     },
     {
       type: "push",
       user: "justice6767",
       text: "記錄勒 刪一刪啦 別誤導別人 檢舉了",
-      time: "08/31",
+      time: "08/31 01:15",
     },
   ],
 };

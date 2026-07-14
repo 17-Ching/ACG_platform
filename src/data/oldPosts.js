@@ -9,6 +9,8 @@ import { oldPostDates, fmtMDY, fmtMD } from './anchors.js'
 const AUTHOR = 'k_r_o_w'
 const d = (m, day) => new Date(2014, m - 1, day)
 const stamp = (date, clock) => `${fmtMDY(date)} ${clock}`
+// 推文時間戳:同日的某個時刻
+const pushAt = (date, clock) => `${fmtMD(date)} ${clock}`
 
 export const oldPosts = [
   // ── 舊文①(最早貼文)──
@@ -28,12 +30,12 @@ export const oldPosts = [
       '—— 手機發文,排版亂請見諒',
     ].join('\n'),
     pushes: [
-      { type: 'push', user: '路人甲', text: '生活好無聊,路過推一下', time: fmtMD(oldPostDates.p1) },
-      { type: 'push', user: 'abc123', text: '日出了還在爬文,我也是醉了 zzz', time: fmtMD(oldPostDates.p1) },
-      { type: 'push', user: '小明', text: '就這?沒圖沒真相 XD', time: fmtMD(oldPostDates.p1) },
-      { type: 'push', user: '夜貓', text: '是在哈囉,這板怎麼這麼冷', time: fmtMD(oldPostDates.p1) },
-      { type: 'push', user: '匿名', text: '密的啦,樓主加油(隨手推)', time: fmtMD(oldPostDates.p1) },
-      { type: 'push', user: '過客', text: '碼的,怎麼都沒人正經回你,同情推', time: fmtMD(oldPostDates.p1) },
+      { type: 'push', user: '路人甲', text: '生活好無聊,路過推一下', time: pushAt(oldPostDates.p1, '04:02') },
+      { type: 'push', user: 'abc123', text: '日出了還在爬文,我也是醉了 zzz', time: pushAt(oldPostDates.p1, '04:15') },
+      { type: 'push', user: '小明', text: '就這?沒圖沒真相 XD', time: pushAt(oldPostDates.p1, '04:31') },
+      { type: 'push', user: '夜貓', text: '是在哈囉,這板怎麼這麼冷', time: pushAt(oldPostDates.p1, '04:56') },
+      { type: 'push', user: '匿名', text: '密的啦,樓主加油(隨手推)', time: pushAt(oldPostDates.p1, '05:10') },
+      { type: 'push', user: '過客', text: '碼的,怎麼都沒人正經回你,同情推', time: pushAt(oldPostDates.p1, '06:03') },
     ],
   },
 
@@ -51,8 +53,8 @@ export const oldPosts = [
       '算了,沒事,發廢文而已。',
     ].join('\n'),
     pushes: [
-      { type: 'push', user: 'KKcat', text: '??發生什麼事了嗎', time: fmtMD(oldPostDates.p2) },
-      { type: 'push', user: 'k_r_o_w', text: '沒事啦 想太多', time: fmtMD(oldPostDates.p2) },
+      { type: 'push', user: 'KKcat', text: '??發生什麼事了嗎', time: pushAt(oldPostDates.p2, '01:25') },
+      { type: 'push', user: 'k_r_o_w', text: '沒事啦 想太多', time: pushAt(oldPostDates.p2, '01:31') },
     ],
   },
 
@@ -177,7 +179,7 @@ export const oldPosts = [
     ].join('\n'),
     filler: true,
     pushes: [
-      { type: 'push', user: '球迷99', text: '世足文去專板發啦', time: fmtMD(d(6, 14)) },
+      { type: 'push', user: '球迷99', text: '世足文去專板發啦', time: pushAt(d(6, 14), '03:29') },
     ],
   },
   {
@@ -208,7 +210,7 @@ export const oldPosts = [
     ].join('\n'),
     filler: true,
     pushes: [
-      { type: 'push', user: '路人丙', text: '邊緣人給推 XD', time: fmtMD(d(7, 18)) },
+      { type: 'push', user: '路人丙', text: '邊緣人給推 XD', time: pushAt(d(7, 18), '02:40') },
     ],
   },
   {
@@ -259,8 +261,8 @@ export const oldPosts = [
       '有點期待。',
     ].join('\n'),
     pushes: [
-      { type: 'push', user: 'KKcat', text: '陌生網友的邀約要小心欸', time: fmtMD(oldPostDates.p4) },
-      { type: 'push', user: 'KKcat', text: '真的假的 地址在哪 我不太放心', time: fmtMD(oldPostDates.p4) },
+      { type: 'push', user: 'KKcat', text: '陌生網友的邀約要小心欸', time: pushAt(oldPostDates.p4, '22:47') },
+      { type: 'push', user: 'KKcat', text: '真的假的 地址在哪 我不太放心', time: pushAt(oldPostDates.p4, '23:02') },
     ],
   },
 
@@ -277,9 +279,9 @@ export const oldPosts = [
       '幫我跟 KKcat 說聲謝謝。',
     ].join('\n'),
     pushes: [
-      { type: 'push', user: 'KKcat', text: '?你還好嗎', time: fmtMD(oldPostDates.p5) },
-      { type: 'push', user: 'KKcat', text: '欸 回我一下', time: '08/30' },
-      { type: 'push', user: 'KKcat', text: 'k_r_o_w???', time: '08/31' },
+      { type: 'push', user: 'KKcat', text: '?你還好嗎', time: pushAt(oldPostDates.p5, '19:36') },
+      { type: 'push', user: 'KKcat', text: '欸 回我一下', time: '08/30 10:12' },
+      { type: 'push', user: 'KKcat', text: 'k_r_o_w???', time: '08/31 21:44' },
     ],
   },
 ]
