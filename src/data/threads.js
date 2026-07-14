@@ -15,6 +15,7 @@ import {
   ARCHIVE_QUERY_CODE,
   BACKUP_THREAD,
   BACKUP_POST_DATE,
+  COORD_SHIFT_LAT,
 } from "./anchors.js";
 import { oldPosts } from "./oldPosts.js";
 import { boardPosts } from "./boardPosts.js";
@@ -148,21 +149,15 @@ const dossier = {
     "一個兩年前就失蹤的人,",
     "是誰在幾天前,重設了他的密碼、登入、然後發文?",
     "",
-    "── 補充 ──",
-    "",
-    "有兩樣東西我撈到了邊,撈不到內容,一併放著:",
-    "· 一段被清掉的站內訊息,只搶救回半行殘影:",
-    "  「……我另外留了一份,鎖在……」後面沒了。",
-    "· 案件系統裡掛著一筆加密編碼:格式看得到,內容打不開,",
-    "  跟那個協尋案是同一個案號。",
-    "",
-    "另外,那則地方新聞的原版網頁,路人翻拍了一張給我。",
-    "畫質就這樣。自己看。",
+    "那則地方新聞有人貼過了，自己看。",
   ].join("\n"),
-  // 新聞網頁翻拍(關卡 6 擴充):線索在圖內,頁面文字不重複拼出
-  images: [{ src: newsScan, alt: "地方新聞網頁翻拍" }],
   // 文末引用區塊:引個資頁的欄位原值,整塊可點回 /user/k_r_o_w
   quotes: [
+    {
+      title: "協尋",
+      lines: [`[轉貼] 兩年前的舊聞,有人記得嗎`],
+      to: "/thread/258",
+    },
     {
       title: "會員資料 —— k_r_o_w",
       lines: [`最後上線    ${profiles.k_r_o_w.lastLogin}`],
@@ -238,13 +233,6 @@ const dossier = {
       text: "如果有人手上有那晚的東西,把時間、地點對一對。",
       time: fmtMD(storyNow),
     },
-    // 極軟提示:只指向圖上的污漬,不拼字、不指名
-    {
-      type: "push",
-      user: "abc999",
-      text: "那個污漬是滴到了啥",
-      time: fmtMD(storyNow),
-    },
   ],
 };
 
@@ -263,11 +251,20 @@ const newsRepost = {
     "……一名十四歲少年離家後失去聯繫,家屬於數日後報案。",
     "警方表示已受理協尋。……",
   ].join("\n"),
+  // 新聞網頁翻拍(關卡 6 擴充):線索在圖內,頁面文字不重複拼出
+  images: [{ src: newsScan, alt: "地方新聞網頁翻拍" }],
   pushes: [
     {
       type: "arrow",
       user: "路人",
       text: "這則後來沒有後續了。就這樣沒了。",
+      time: fmtMD(storyNow),
+    },
+    // 極軟提示:只指向圖上的污漬,不拼字、不指名
+    {
+      type: "push",
+      user: "abc999",
+      text: "那個污漬是滴到了啥",
       time: fmtMD(storyNow),
     },
   ],
@@ -334,6 +331,87 @@ const caseClosure = {
   ],
 };
 
+// 飄版目擊文(night_hiker,2014 舊文):上鎖文對話截圖「飄版有人 po 說
+// 看到黑影」指的就是這篇。中段反白段落用 contentParts 的 hidden 部分呈現,
+// 位移值引用總表「終局座標」;justice6767 推文照提供版本。
+const ghostSighting = {
+  id: "218", // 登錄於總表「隱藏頁/特殊路由一覽」
+  board: "飄版",
+  author: "night_hiker",
+  title: "[經驗] 半夜在會館附近看到的黑影",
+  date: new Date(2014, 7, 30, 23, 41),
+  time: "08/30/2014 23:41",
+  contentParts: [
+    {
+      text: [
+        "發生在前陣子,到現在還是覺得毛毛的,想上來問大家。",
+        "",
+        "那天半夜我睡不著,開車上山想去會館那邊的產業道路兜風",
+        "(對就是新聞在吵那間常擾民的會館附近)。",
+        "",
+        "經過一座小土地公廟的時候,遠遠看到有兩三個人影在後面空地",
+        "拿著東西在挖,車燈一照他們就停下來往我這邊看,",
+        "我嚇到油門直接催走,後照鏡裡那幾個黑影就站在那裡一直看我…",
+        "",
+        "回到家越想越不對,那個時間、那個地方,誰會在那邊挖東西?",
+        "我知道這樣講很鬧,但我真的覺得那不是活人該做的事。",
+        "",
+        "──────────────────────────",
+        "(怕以後忘記,把位置記一下,免得哪天真的怎麼樣沒人知道我去過哪)",
+        "",
+      ].join("\n"),
+    },
+    {
+      hidden: true,
+      text: [
+        "土地公廟就在會館正north一點點,經緯度大概是會館那組",
+        `再往上加 ${COORD_SHIFT_LAT} 就到了,自己去對`,
+      ].join("\n"),
+    },
+    {
+      text: ["", "──────────────────────────"].join("\n"),
+    },
+  ],
+  pushes: [
+    {
+      type: "push",
+      user: "aaa123",
+      text: "樓主別嚇我 起雞皮疙瘩",
+      time: "08/30",
+    },
+    {
+      type: "push",
+      user: "mountain_cat",
+      text: "那間會館本來就怪 之前也有人說晚上有聲音",
+      time: "08/31",
+    },
+    {
+      type: "push",
+      user: "justice6767",
+      text: "三小啦 看太多鬼片喔 挖土=鬧鬼?農夫都是鬼囉 zzz",
+      time: "08/31",
+    },
+    {
+      type: "push",
+      user: "justice6767",
+      text: "這種文也信 難怪台灣鬼故事永遠寫不完 笑死",
+      time: "08/31",
+    },
+    {
+      type: "push",
+      user: "night_hiker",
+      text: "我知道很扯…但我真的沒騙人 就記錄一下",
+      time: "08/31",
+    },
+    {
+      type: "push",
+      user: "justice6767",
+      text: "記錄勒 刪一刪啦 別誤導別人 檢舉了",
+      time: "08/31",
+    },
+  ],
+};
+
 // shan_0829 的未公開上鎖文:不掛任何看板(unlisted),只出現在他的帳號頁。
 // 解鎖碼 = 案件編號(總表),與帳號頁入口一併登錄於總表第五、八節。
 // 對話紀錄先用文字版佔位(chatLogs),之後補真截圖時填 image 即可。
@@ -382,6 +460,7 @@ export const threads = {
   [dossier.id]: dossier,
   [newsRepost.id]: newsRepost,
   [caseClosure.id]: caseClosure,
+  [ghostSighting.id]: ghostSighting,
   [shanBackup.id]: shanBackup,
   ...Object.fromEntries(oldPosts.map((post) => [post.id, post])),
   ...Object.fromEntries(boardPosts.map((post) => [post.id, post])),

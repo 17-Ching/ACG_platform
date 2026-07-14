@@ -29,6 +29,10 @@ const quoteList = computed(() => props.thread.quotes ?? (props.thread.quote ? [p
 const zoomedImage = ref(null)
 const zoomedChat = ref(null)
 
+// 內文分段:contentParts 可混合一般段與 hidden 段(反白段:選取或點擊才顯現)
+const contentParts = computed(() => props.thread.contentParts ?? [{ text: props.thread.content }])
+const revealed = ref({})
+
 const draft = ref('')
 
 function submit() {
@@ -75,7 +79,7 @@ function segments(text) {
     </header>
 
     <!-- 主文(pre-wrap 容器,標記全部寫在同一行以免多出空白) -->
-    <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(seg, i) in segments(thread.content)" :key="i"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></div>
+    <div class="whitespace-pre-wrap break-words px-3 py-3"><template v-for="(part, pi) in contentParts" :key="pi"><span v-if="part.hidden" class="spoiler" :class="{ 'spoiler-open': revealed[pi] }" @click="revealed[pi] = !revealed[pi]">{{ part.text }}</span><template v-else><template v-for="(seg, i) in segments(part.text)" :key="`${pi}-${i}`"><RouterLink v-if="seg.id" :to="`/user/${seg.id}`" class="text-bbs-link hover:underline">{{ seg.id }}</RouterLink><span v-else>{{ seg.text }}</span></template></template></template></div>
 
     <!-- 內文附圖 -->
     <div
@@ -168,3 +172,18 @@ function segments(text) {
     </div>
   </article>
 </template>
+
+<style scoped>
+/* 反白段:平時與底色同化,滑鼠選取或點擊(spoiler-open)才顯現 */
+.spoiler {
+  color: transparent;
+  cursor: pointer;
+}
+.spoiler.spoiler-open {
+  color: inherit;
+}
+.spoiler::selection {
+  color: theme('colors.bbs.fg');
+  background-color: theme('colors.bbs.sel');
+}
+</style>

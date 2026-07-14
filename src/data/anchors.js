@@ -64,3 +64,6 @@ export const ARCHIVE_QUERY_CODE = `${PHOTO_CODE}-${MAILBOX_PASSCODE}-${dormantSi
 // shan_0829 未公開上鎖文(總表 第五、八節)
 export const BACKUP_THREAD = '301'
 export const BACKUP_POST_DATE = new Date(2014, 8, 6) // 發文日 = 結案日 + 3 天(總表)
+
+// 終局座標位移(總表 第七節):緯度往上加,經度不動
+export const COORD_SHIFT_LAT = 0.0829
