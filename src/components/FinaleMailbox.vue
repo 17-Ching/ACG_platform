@@ -120,26 +120,37 @@ const zoomed = ref(false)
     </div>
 
     <!-- 附檔照片 -->
-    <div
-      v-if="finale.coordsSolved && beat >= 2"
-      class="border border-bbs-border bg-bbs-panel"
-    >
-      <div class="border-b border-bbs-border px-3 py-1 text-bbs-dim">
-        {{ krowCoordReply.photo.caption }}
-      </div>
-      <div class="overflow-auto px-3 py-3" :class="zoomed ? 'max-h-[80vh]' : ''">
-        <img
-          v-if="krowCoordReply.photo.image"
-          :src="krowCoordReply.photo.image"
-          :alt="krowCoordReply.photo.alt"
-          class="mx-auto"
-          :class="zoomed ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
-          @click="zoomed = !zoomed"
-        />
-        <div v-else class="flex aspect-[4/3] items-center justify-center bg-black text-bbs-dim">
-          (相片)
+    <Transition name="fade">
+      <div
+        v-if="finale.coordsSolved && beat >= 2"
+        class="border border-bbs-border bg-bbs-panel"
+      >
+        <div class="border-b border-bbs-border px-3 py-1 text-bbs-dim">
+          {{ krowCoordReply.photo.caption }}
+        </div>
+        <div class="overflow-auto px-3 py-3" :class="zoomed ? 'max-h-[80vh]' : ''">
+          <img
+            v-if="krowCoordReply.photo.image"
+            :src="krowCoordReply.photo.image"
+            :alt="krowCoordReply.photo.alt"
+            class="mx-auto"
+            :class="zoomed ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+            @click="zoomed = !zoomed"
+          />
+          <div v-else class="flex aspect-[4/3] items-center justify-center bg-black text-bbs-dim">
+            (相片)
+          </div>
         </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active {
+  transition: opacity 2s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+}
+</style>

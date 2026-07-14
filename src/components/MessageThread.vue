@@ -8,7 +8,7 @@ defineProps({
   <div class="border border-bbs-border bg-bbs-panel">
     <div class="border-b border-bbs-border px-3 py-1 text-bbs-accent">┌ 站內信</div>
 
-    <div class="flex flex-col gap-1 px-3 py-2">
+    <TransitionGroup tag="div" name="msg" class="flex flex-col gap-1 px-3 py-2">
       <!-- 讀取狀態:已讀=暗字 ○(帶讀取日期);未讀=紅字 ● + 紅色左框。
            沒有 read 欄位的訊息(信匣主人發出的那側)不顯示狀態 -->
       <div
@@ -34,6 +34,16 @@ defineProps({
         </div>
         <div v-else-if="msg.read === false" class="text-right text-bbs-boo">● 未讀</div>
       </div>
-    </div>
+    </TransitionGroup>
   </div>
 </template>
+
+<style scoped>
+/* 新訊息淡入 */
+.msg-enter-active {
+  transition: opacity 2.5s ease;
+}
+.msg-enter-from {
+  opacity: 0;
+}
+</style>
