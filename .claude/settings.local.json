@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "PowerShell(git init)",
-      "PowerShell(git add -A)"
+      "PowerShell(git add -A)",
+      "Bash(sleep 20; echo \"=== task output ===\"; cat \"C:\\\\Users\\\\Jean\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--ARG-platform\\\\dc35f384-80ac-4be8-aaf8-23c484d0c799\\\\tasks\\\\b1dzw52b0.output\" 2>&1; echo \"=== log file ===\"; cat /tmp/nb_install.log 2>&1; echo \"=== END ===\")",
+      "Read(//tmp/**)",
+      "Bash(cat /tmp/nb2.log 2>&1; echo \"=== END ===\")",
+      "Bash(rm -rf ~/.gemini/extensions/nanobanana)",
+      "Read(//c/Users/Jean/.gemini/extensions/**)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(npm install *)"
     ]
   }
 }

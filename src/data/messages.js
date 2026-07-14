@@ -144,12 +144,11 @@ export const mailboxes = {
       // 派對當晚:照片(EXIF 拍攝 23:47)於現場傳出,其後訊息再無人讀
       {
         id: 30,
-        from: "guest_x",
+        from: "k_r_o_w",
+        own: true,
         time: "2014/08/29 23:52",
         content: "[附檔:party_0xxx.jpg]",
         link: "/photo/party_0xxx",
-        read: true,
-        readAt: READ_TWO_YEARS_LATER,
       },
       {
         id: 17,

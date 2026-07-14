@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply min-h-screen text-sm leading-relaxed;
+    @apply min-h-screen text-base leading-relaxed;
   }
 
   ::selection {
@@ -18,6 +18,6 @@
   /* 老終端感的細捲軸 */
   * {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.bbs.border') theme('colors.bbs.bg');
+    scrollbar-color: theme("colors.bbs.border") theme("colors.bbs.bg");
   }
 }

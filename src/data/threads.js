@@ -365,7 +365,7 @@ const ghostSighting = {
       hidden: true,
       text: [
         "土地公廟就在會館正north一點點,經緯度大概是會館那組",
-        `再往上加 ${COORD_SHIFT_LAT} 就到了,自己去對`,
+        `再往上加 ${COORD_SHIFT_LAT} 就到了`,
       ].join("\n"),
     },
     {
