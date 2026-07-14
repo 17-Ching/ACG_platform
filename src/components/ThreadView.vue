@@ -92,6 +92,23 @@ function segments(text) {
       />
     </div>
 
+    <!-- 附檔對話紀錄(thread.chatLogs):有 image 用截圖,沒有就用文字版佔位 -->
+    <div
+      v-for="(chat, ci) in thread.chatLogs ?? []"
+      :key="`chat-${ci}`"
+      class="mx-3 mb-3 border border-bbs-border px-3 py-2"
+    >
+      <div v-if="chat.caption" class="mb-1 text-bbs-dim">{{ chat.caption }}</div>
+      <img v-if="chat.image" :src="chat.image" :alt="chat.caption" class="max-w-full" />
+      <template v-else>
+        <div v-for="(line, li) in chat.lines" :key="li" class="flex gap-2">
+          <span class="shrink-0 text-bbs-accent">{{ line.speaker }}</span>
+          <span class="text-bbs-dim">:</span>
+          <span class="break-words" :class="line.redacted ? 'text-bbs-dim' : ''">{{ line.text }}</span>
+        </div>
+      </template>
+    </div>
+
     <!-- 文末引用區塊:{ title, lines, to },整塊可點 -->
     <RouterLink
       v-for="(quote, qi) in quoteList"

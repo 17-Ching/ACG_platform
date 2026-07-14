@@ -12,11 +12,15 @@ import {
   fmtMD,
   PHOTO_CODE,
   DOSSIER_THREAD,
+  ARCHIVE_QUERY_CODE,
+  BACKUP_THREAD,
+  BACKUP_POST_DATE,
 } from "./anchors.js";
 import { oldPosts } from "./oldPosts.js";
 import { boardPosts } from "./boardPosts.js";
 import { profiles } from "./profiles.js";
 import newsScan from "../assets/news.png";
+import reportScan from "../assets/report.webp";
 
 // 懸賞主文(docs/design/懸賞_關卡1與2_懸賞主文與起疑.md)
 // 發文日 = 故事當下 00:00(總表:懸賞文發文日)
@@ -214,18 +218,6 @@ const dossier = {
       text: "KKcat 你先冷靜 你是不是知道什麼",
       time: fmtMD(storyNow),
     },
-    {
-      type: "push",
-      user: "KKcat",
-      text: "我只知道,他最後一句話是叫我不要找他。",
-      time: fmtMD(storyNow),
-    },
-    {
-      type: "push",
-      user: "KKcat",
-      text: "可是他明明就在找我們。",
-      time: fmtMD(storyNow),
-    },
     // 以下三則為關卡 7 的追查線頭(設計文件之外的補充,data_digger 維持只擺事實)
     {
       type: "push",
@@ -305,12 +297,6 @@ const caseClosure = {
       lines: ["〈少年離家後失蹤 家屬報案〉"],
       to: "/thread/258",
     },
-    // 關卡 7.5 入口:整塊可點,連到卷宗調閱頁
-    {
-      title: "卷宗調閱系統",
-      lines: ["附件編號 ████-████-███(已封存,無法調閱)"],
-      to: "/archive",
-    },
   ],
   pushes: [
     {
@@ -347,6 +333,59 @@ const caseClosure = {
   ],
 };
 
+// shan_0829 的未公開上鎖文:不掛任何看板(unlisted),只出現在他的帳號頁。
+// 解鎖碼 = 案件編號(總表),與帳號頁入口一併登錄於總表第五、八節。
+// 對話紀錄先用文字版佔位(chatLogs),之後補真截圖時填 image 即可。
+const shanBackup = {
+  id: BACKUP_THREAD,
+  unlisted: true,
+  author: "shan_0829",
+  title: "[備份] 我留了一份。",
+  locked: {
+    code: ARCHIVE_QUERY_CODE,
+    hint: "鑰匙就是編號。你一路查過的那三段,拼起來。",
+    wrongText: "不是這個。你還沒查到那一步。",
+  },
+  date: BACKUP_POST_DATE,
+  time: `${fmtMDY(BACKUP_POST_DATE)} 02:11`,
+  content: [
+    "我不知道誰會找到這裡,也不知道那時我還在不在。",
+    "",
+    "當年我在場。我什麼都沒做——",
+    "這句話我對自己講了很多次,沒有一次講得過去。",
+    "",
+    "東西我留了一份,放在下面。",
+    "看完你就知道,為什麼這件事沒有人敢講。",
+  ].join("\n"),
+  images: [{ src: reportScan, alt: "現場採證暨檢驗報告(節本)掃描件" }],
+  chatLogs: [
+    {
+      image: null,
+      caption: "[翻拍] 對話紀錄(來源不明)",
+      lines: [
+        { speaker: "小開", text: "處理好了嗎" },
+        { speaker: "友人", text: "好了 都清乾淨了" },
+        { speaker: "小開", text: "那個…東西呢" },
+        { speaker: "友人", text: "丟在會館後面 埋了 別再問" },
+        // 座標行:以塗黑狀態顯示,之後的步驟才做解讀
+        { speaker: "友人", text: "████████████████████", redacted: true },
+        { speaker: "小開", text: "確定沒人看到" },
+        { speaker: "友人", text: "靠 你別烏鴉嘴 飄版竟然有人 po 說那晚看到黑影" },
+        { speaker: "小開", text: "幹 那篇壓一下 叫 justice6767 去洗" },
+        { speaker: "友人", text: "已經在弄了 沒人會信啦 當鬼故事而已" },
+      ],
+    },
+  ],
+  // 文末引用:整塊可點,回懸賞主文
+  quotes: [
+    {
+      title: bounty.title,
+      lines: [bounty.content.split("\n").at(-1)],
+      to: `/thread/${bounty.id}`,
+    },
+  ],
+};
+
 export const pinnedThread = bounty;
 
 export const threads = {
@@ -354,6 +393,7 @@ export const threads = {
   [dossier.id]: dossier,
   [newsRepost.id]: newsRepost,
   [caseClosure.id]: caseClosure,
+  [shanBackup.id]: shanBackup,
   ...Object.fromEntries(oldPosts.map((post) => [post.id, post])),
   ...Object.fromEntries(boardPosts.map((post) => [post.id, post])),
 };

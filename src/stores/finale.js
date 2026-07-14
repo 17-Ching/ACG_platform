@@ -1,12 +1,12 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useProgressStore } from './progress.js'
-import { DOSSIER_THREAD } from '../data/anchors.js'
+import { DOSSIER_THREAD, BACKUP_THREAD } from '../data/anchors.js'
 
 const STORAGE_KEY = 'bbs-finale'
 
-// 終局觸發:三道關(站內信匣、八卦板上鎖文章、卷宗調閱)都開過,才算東西到手。
-const REQUIRED_KEYS = ['mail:k_r_o_w', `unlock:${DOSSIER_THREAD}`, 'archive:report']
+// 終局觸發:三道關(站內信匣、八卦板上鎖文章、shan_0829 上鎖文)都開過,才算東西到手。
+const REQUIRED_KEYS = ['mail:k_r_o_w', `unlock:${DOSSIER_THREAD}`, `unlock:${BACKUP_THREAD}`]
 
 // 兩個結局的代號:expose = 公開證據,silence = 刪除證據收下錢
 const CHOICES = ['expose', 'silence']

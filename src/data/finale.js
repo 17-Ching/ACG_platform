@@ -8,6 +8,7 @@ import {
   PHOTO_GPS,
   ARCHIVE_QUERY_CODE,
   DOSSIER_THREAD,
+  BACKUP_THREAD,
 } from './anchors.js'
 import { threads } from './threads.js'
 
@@ -41,8 +42,8 @@ export const evidenceItems = [
   },
   {
     label: '現場採證暨檢驗報告(節本)',
-    note: `已封存 · 調閱編號 ${ARCHIVE_QUERY_CODE}`,
-    to: '/archive',
+    note: `已封存 · 案件編號 ${ARCHIVE_QUERY_CODE}`,
+    to: `/thread/${BACKUP_THREAD}`,
   },
 ]
 

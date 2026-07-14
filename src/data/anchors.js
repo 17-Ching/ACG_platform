@@ -57,6 +57,10 @@ export function fmtMD(d) {
 // EXIF 拍攝時間 = 失蹤日當晚,與照片鐘面一致(總表)
 export const PHOTO_TAKEN_AT = `${fmtYMD(dormantSince)} ${PHOTO_CLOCK}`
 
-// 卷宗調閱查詢碼(總表「關卡 7.5 查詢碼推導」):
+// 案件編號 = shan_0829 未公開上鎖文的解鎖碼(總表「關卡 7.5 查詢碼推導」):
 // 關卡 5 解鎖碼 - 站內信通行碼 - 失蹤日月日(8/29 → 829,月不補零)
 export const ARCHIVE_QUERY_CODE = `${PHOTO_CODE}-${MAILBOX_PASSCODE}-${dormantSince.getMonth() + 1}${pad(dormantSince.getDate())}`
+
+// shan_0829 未公開上鎖文(總表 第五、八節)
+export const BACKUP_THREAD = '301'
+export const BACKUP_POST_DATE = new Date(2014, 8, 6) // 發文日 = 結案日 + 3 天(總表)
