@@ -18,7 +18,12 @@ defineProps({
         :class="msg.read === false ? 'border-bbs-boo' : 'border-bbs-border'"
       >
         <div class="flex gap-2">
-          <span :class="msg.own ? 'text-bbs-warn' : 'text-bbs-accent'">{{ msg.from }}</span>
+          <!-- 寄件人可點,連到帳號頁 -->
+          <RouterLink
+            :to="`/user/${msg.from}`"
+            :class="msg.own ? 'text-bbs-warn' : 'text-bbs-accent'"
+            class="hover:underline"
+          >{{ msg.from }}</RouterLink>
           <span class="ml-auto shrink-0 text-bbs-dim">{{ msg.time }}</span>
         </div>
         <div class="whitespace-pre-wrap break-words">
