@@ -25,8 +25,9 @@ const allPushes = computed(() => [...(props.thread.pushes ?? []), ...props.visit
 // 文末引用區塊:支援 thread.quotes(陣列)與舊式 thread.quote(單筆)
 const quoteList = computed(() => props.thread.quotes ?? (props.thread.quote ? [props.thread.quote] : []))
 
-// 內文附圖(thread.images):點圖放大,同一時間只放大一張
+// 內文附圖(thread.images)與對話截圖(thread.chatLogs):點圖放大,各自同一時間只放大一張
 const zoomedImage = ref(null)
+const zoomedChat = ref(null)
 
 const draft = ref('')
 
@@ -99,7 +100,19 @@ function segments(text) {
       class="mx-3 mb-3 border border-bbs-border px-3 py-2"
     >
       <div v-if="chat.caption" class="mb-1 text-bbs-dim">{{ chat.caption }}</div>
-      <img v-if="chat.image" :src="chat.image" :alt="chat.caption" class="max-w-full" />
+      <div
+        v-if="chat.image"
+        class="overflow-auto"
+        :class="zoomedChat === ci ? 'max-h-[80vh]' : ''"
+      >
+        <img
+          :src="chat.image"
+          :alt="chat.caption"
+          class="mx-auto"
+          :class="zoomedChat === ci ? 'w-[180%] max-w-none cursor-zoom-out' : 'max-w-full cursor-zoom-in'"
+          @click="zoomedChat = zoomedChat === ci ? null : ci"
+        />
+      </div>
       <template v-else>
         <div v-for="(line, li) in chat.lines" :key="li" class="flex gap-2">
           <span class="shrink-0 text-bbs-accent">{{ line.speaker }}</span>
