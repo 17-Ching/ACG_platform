@@ -5,7 +5,8 @@ import {
   krowCoordMail,
   krowCoordReply,
   coordRejectText,
-  matchesBurialCoords,
+  matchesBurialLat,
+  burialLon,
   kkcatLetter,
   justiceLetter,
 } from '../data/finale.js'
@@ -40,7 +41,7 @@ const coordInput = ref('')
 const rejected = ref(false)
 
 function submitCoords() {
-  if (matchesBurialCoords(coordInput.value)) {
+  if (matchesBurialLat(coordInput.value)) {
     rejected.value = false
     finale.solveCoords()
     runBeats([1200, 3200])
@@ -102,18 +103,22 @@ const zoomed = ref(false)
       v-if="!finale.coordsSolved"
       class="border border-bbs-border bg-bbs-panel px-3 py-4 text-center"
     >
-      <form class="flex items-baseline justify-center gap-2" @submit.prevent="submitCoords">
+      <form
+        class="flex flex-wrap items-baseline justify-center gap-2"
+        @submit.prevent="submitCoords"
+      >
         <label class="shrink-0 text-bbs-dim" for="coord-input">座標</label>
         <input
           id="coord-input"
           v-model="coordInput"
-          maxlength="30"
+          maxlength="10"
           autocomplete="off"
           spellcheck="false"
-          placeholder="緯度, 經度"
-          class="w-64 max-w-full border-b border-bbs-border bg-transparent text-center tracking-wide text-bbs-bright outline-none placeholder:text-bbs-dim focus:border-bbs-accent"
+          placeholder="緯度"
+          class="w-28 border-b border-bbs-border bg-transparent text-center tracking-wide text-bbs-bright outline-none placeholder:text-bbs-dim focus:border-bbs-accent"
           @input="rejected = false"
         />
+        <span class="shrink-0 text-bbs-dim">, {{ burialLon }}</span>
         <button type="submit" class="shrink-0 text-bbs-link hover:text-bbs-bright">[送出]</button>
       </form>
       <p v-if="rejected" class="mt-3 text-bbs-boo">{{ coordRejectText }}</p>

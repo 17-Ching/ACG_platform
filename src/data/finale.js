@@ -40,6 +40,13 @@ export function matchesBurialCoords(input) {
   return parts.length === 2 && parts[0] === target[0] && parts[1] === target[1];
 }
 
+// 經度不變,表單預填顯示;玩家只需輸入算出來的緯度
+export const burialLon = BURIAL_COORDS.split(", ")[1];
+
+export function matchesBurialLat(input) {
+  return String(input ?? "").trim() === BURIAL_COORDS.split(", ")[0];
+}
+
 // 座標正確後 k_r_o_w 的回覆(◆ 佔位:一句極簡回覆,待提供版本替換)
 export const krowCoordReply = {
   from: "k_r_o_w",
