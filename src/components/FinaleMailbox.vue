@@ -13,12 +13,15 @@ import { useProgressStore } from '../stores/progress.js'
 import { useFinaleStore } from '../stores/finale.js'
 
 const COORDS_KEY = 'coords:burial'
+const LETTERS_KEY = 'letters:open'
 const progress = useProgressStore()
 const finale = useFinaleStore()
 
 const coordsSolved = computed(() => progress.isSolved(COORDS_KEY))
+// 點過新訊息通知後,信匣刷新成只剩兩封新信
+const lettersOpened = computed(() => progress.isSolved(LETTERS_KEY))
 
-// 逐段浮現:回覆 → 照片 → 兩封新信。已解過(重訪/回到抉擇點)用短節奏
+// 逐段浮現:回覆 → 照片 → 新訊息通知。已解過(重訪)用短節奏
 const beat = ref(0)
 let timers = []
 function runBeats(times) {
@@ -38,7 +41,7 @@ function submitCoords() {
   if (matchesBurialCoords(coordInput.value)) {
     rejected.value = false
     progress.markSolved(COORDS_KEY)
-    runBeats([1500, 3500, 7500])
+    runBeats([1500, 3500, 7000])
   } else {
     rejected.value = true
   }
@@ -62,7 +65,34 @@ const zoomed = ref(false)
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
+  <!-- 兩封新信:點過通知後的信匣,只剩這兩封,只能回其中一封 -->
+  <div v-if="lettersOpened" class="flex flex-col gap-3">
+    <div
+      v-for="letter in letters"
+      :key="letter.id"
+      class="border border-bbs-border bg-bbs-panel"
+    >
+      <div class="border-b border-bbs-border px-3 py-1">
+        <span class="text-bbs-accent">┌ 新訊息 ─ </span>
+        <RouterLink
+          :to="`/user/${letter.from}`"
+          class="text-bbs-bright hover:underline"
+        >{{ letter.from }}</RouterLink>
+        <span class="float-right text-bbs-dim">{{ letter.time }}</span>
+      </div>
+      <div class="whitespace-pre-wrap break-words px-3 py-3">{{ letter.content }}</div>
+      <div class="border-t border-bbs-border px-3 py-2 text-right">
+        <button
+          type="button"
+          class="text-bbs-link hover:text-bbs-bright"
+          @click="finale.choose(letter.id === 'letter-kkcat' ? 'expose' : 'silence')"
+        >[回信]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 座標信 → 回覆與照片 → 新訊息通知 -->
+  <div v-else class="flex flex-col gap-3">
     <MessageThread :messages="krowMessages" />
 
     <!-- 座標輸入 -->
@@ -109,32 +139,17 @@ const zoomed = ref(false)
       </div>
     </Transition>
 
-    <!-- 兩封新信:只能回其中一封 -->
+    <!-- 新訊息通知:點下去刷新信匣 -->
     <Transition name="fade">
-      <div v-if="coordsSolved && beat >= 3" class="flex flex-col gap-3">
-        <div
-          v-for="letter in letters"
-          :key="letter.id"
-          class="border border-bbs-border bg-bbs-panel"
-        >
-          <div class="border-b border-bbs-border px-3 py-1">
-            <span class="text-bbs-accent">┌ 新訊息 ─ </span>
-            <RouterLink
-              :to="`/user/${letter.from}`"
-              class="text-bbs-bright hover:underline"
-            >{{ letter.from }}</RouterLink>
-            <span class="float-right text-bbs-dim">{{ letter.time }}</span>
-          </div>
-          <div class="whitespace-pre-wrap break-words px-3 py-3">{{ letter.content }}</div>
-          <div class="border-t border-bbs-border px-3 py-2 text-right">
-            <button
-              type="button"
-              class="text-bbs-link hover:text-bbs-bright"
-              @click="finale.choose(letter.id === 'letter-kkcat' ? 'expose' : 'silence')"
-            >[回信]</button>
-          </div>
-        </div>
-      </div>
+      <button
+        v-if="coordsSolved && beat >= 3"
+        type="button"
+        class="block w-full border border-bbs-border bg-bbs-panel px-3 py-2 text-center hover:bg-bbs-sel"
+        @click="progress.markSolved(LETTERS_KEY)"
+      >
+        <span class="animate-pulse text-bbs-warn">▌新訊息 (2)</span>
+        <span class="ml-3 text-bbs-link">[開啟]</span>
+      </button>
     </Transition>
   </div>
 </template>
