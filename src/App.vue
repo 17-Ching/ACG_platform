@@ -12,12 +12,18 @@ const finale = useFinaleStore()
       <RouterLink to="/" class="text-bbs-accent hover:text-bbs-bright">
         ▌夜燈站<span class="text-bbs-dim"> Yodeng BBS</span>
       </RouterLink>
-      <span class="float-right text-bbs-dim">telnet://yodeng…</span>
+      <span class="float-right hidden text-bbs-dim sm:inline">telnet://yodeng…</span>
+      <!-- 收件匣:有未讀時變成閃爍的新訊息通知,點開即消 -->
       <RouterLink
-        v-if="finale.evidenceReady && !finale.choice"
         :to="`/user/${VISITOR_ID}/mail`"
-        class="float-right mr-4 animate-pulse text-bbs-warn hover:text-bbs-bright"
-      >[新訊息 1]</RouterLink>
+        class="float-right sm:mr-4"
+        :class="
+          finale.newMailCount
+            ? 'animate-pulse text-bbs-warn hover:text-bbs-bright'
+            : 'text-bbs-dim hover:text-bbs-bright'
+        "
+        @click="finale.newMailCount === 2 && finale.openLetters()"
+      >{{ finale.newMailCount ? `[新訊息 ${finale.newMailCount}]` : '[收件匣 0]' }}</RouterLink>
     </header>
 
     <main class="flex-1">
