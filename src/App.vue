@@ -1,9 +1,27 @@
 <script setup>
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import SiteFooter from './components/SiteFooter.vue'
 import { useFinaleStore } from './stores/finale.js'
 import { VISITOR_ID } from './stores/visitorPosts.js'
 
+const router = useRouter()
 const finale = useFinaleStore()
+
+// 未讀數增加的當下跳彈窗(重新整理不重跳,站頭閃爍當備援)
+const showMailModal = ref(false)
+watch(
+  () => finale.newMailCount,
+  (now, before) => {
+    if (now > before) showMailModal.value = true
+  },
+)
+
+function openMail() {
+  showMailModal.value = false
+  if (finale.newMailCount === 2) finale.openLetters()
+  router.push(`/user/${VISITOR_ID}/mail`)
+}
 </script>
 
 <template>
@@ -31,5 +49,24 @@ const finale = useFinaleStore()
     </main>
 
     <SiteFooter />
+
+    <!-- 新訊息彈窗 -->
+    <div
+      v-if="showMailModal && finale.newMailCount"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+    >
+      <div class="w-full max-w-sm border border-bbs-accent bg-bbs-panel text-center">
+        <div class="border-b border-bbs-border px-3 py-1 text-left text-bbs-accent">┌ 系統通知</div>
+        <p class="animate-pulse px-3 py-6 text-bbs-warn">▌你有 {{ finale.newMailCount }} 封新訊息</p>
+        <div class="flex justify-center gap-6 border-t border-bbs-border px-3 py-2">
+          <button type="button" class="text-bbs-link hover:text-bbs-bright" @click="openMail">
+            [開啟信匣]
+          </button>
+          <button type="button" class="text-bbs-dim hover:text-bbs-bright" @click="showMailModal = false">
+            [稍後]
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
