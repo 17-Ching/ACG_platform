@@ -20,7 +20,7 @@ import {
 import { oldPosts } from "./oldPosts.js";
 import { boardPosts } from "./boardPosts.js";
 import { profiles } from "./profiles.js";
-import newsScan from "../assets/news.png";
+import newsScan from "../assets/news.webp";
 import reportScan from "../assets/report.webp";
 import chatShot from "../assets/chat_confession.png";
 
