@@ -1,11 +1,13 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, onUnmounted, ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import ThreadView from "../components/ThreadView.vue";
 import { threads } from "../data/threads.js";
 import { profiles } from "../data/profiles.js";
+import { BACKUP_THREAD } from "../data/anchors.js";
 import { useVisitorPostsStore, VISITOR_ID } from "../stores/visitorPosts.js";
 import { useProgressStore } from "../stores/progress.js";
+import { useFinaleStore } from "../stores/finale.js";
 
 const route = useRoute();
 const thread = computed(() => threads[route.params.id]);
@@ -41,6 +43,26 @@ function tryUnlock() {
     parts.value = segments.value.map(() => "");
   }
 }
+
+// 滑到 shan_0829 上鎖文(解鎖後)底部才算讀完,終局第一封信以此觸發
+const finale = useFinaleStore();
+function checkReadToEnd() {
+  if (window.innerHeight + window.scrollY < document.body.offsetHeight - 80)
+    return;
+  finale.markBackupRead();
+  window.removeEventListener("scroll", checkReadToEnd);
+}
+watchEffect(() => {
+  if (typeof window === "undefined") return;
+  if (thread.value?.id === BACKUP_THREAD && !isLocked.value) {
+    window.addEventListener("scroll", checkReadToEnd, { passive: true });
+    setTimeout(checkReadToEnd, 500); // 內容不足一屏時直接算讀完
+  }
+});
+onUnmounted(() => {
+  if (typeof window !== "undefined")
+    window.removeEventListener("scroll", checkReadToEnd);
+});
 </script>
 
 <template>

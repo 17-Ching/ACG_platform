@@ -14,8 +14,8 @@ import { useFinaleStore } from '../stores/finale.js'
 
 const finale = useFinaleStore()
 
-// 一句一句傳:回覆 → 照片,依序直接出現(無淡入)。重訪用短節奏。
-// 照片出現的那一拍才記 photoSeen,站頭「新訊息 2」隨之亮起。
+// 一句一句傳:回覆 → 照片 → (五秒後)通知,依序出現。重訪用短節奏。
+// 照片出現後第三拍才記 photoSeen,「新訊息 2」彈窗隨之跳出。
 const beat = ref(0)
 let timers = []
 function runBeats(times) {
@@ -24,7 +24,7 @@ function runBeats(times) {
   timers = times.map((ms, i) =>
     setTimeout(() => {
       beat.value = i + 1
-      if (i === 1) finale.markPhotoSeen()
+      if (i === 2) finale.markPhotoSeen()
     }, ms),
   )
 }
@@ -32,7 +32,7 @@ function runBeats(times) {
 onMounted(() => {
   // 打開信匣 = 點開了 k_r_o_w 的新訊息,站頭通知即消
   finale.markMailSeen()
-  if (finale.coordsSolved) runBeats([200, 600])
+  if (finale.coordsSolved) runBeats([200, 600, 1000])
 })
 onUnmounted(() => timers.forEach(clearTimeout))
 
@@ -44,7 +44,7 @@ function submitCoords() {
   if (matchesBurialLat(coordInput.value)) {
     rejected.value = false
     finale.solveCoords()
-    runBeats([1200, 3200])
+    runBeats([1200, 3200, 8200]) // 照片 3.2s 出現,+5s 跳通知
   } else {
     rejected.value = true
   }
