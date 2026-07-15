@@ -35,12 +35,13 @@ export const useFinaleStore = defineStore('finale', () => {
   const lettersOpened = computed(() => progress.isSolved(LETTERS_KEY))
 
   // 站頭收件匣的未讀數:0 = 收件匣、1 = k_r_o_w 的信、2 = 兩封新信
-  // 「新訊息 2」要等照片在信匣顯示過(photoSeen)才亮
+  // 「新訊息 2」要等照片在信匣顯示過(photoSeen)才亮;
+  // 走到照片代表 k_r_o_w 的信早收過了,這段不受 read:backup 閘門影響
   const newMailCount = computed(() => {
     if (!evidenceReady.value || choice.value) return 0
+    if (photoSeen.value) return lettersOpened.value ? 0 : 2
     if (!progress.isSolved(BACKUP_READ_KEY)) return 0
     if (!progress.isSolved(SEEN_KROW_KEY)) return 1
-    if (photoSeen.value && !lettersOpened.value) return 2
     return 0
   })
 
