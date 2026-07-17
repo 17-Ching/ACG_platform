@@ -30,8 +30,9 @@ function runBeats(times) {
 }
 
 onMounted(() => {
-  // 打開信匣 = 點開了 k_r_o_w 的新訊息,站頭通知即消
-  finale.markMailSeen()
+  // 站頭掛著「新訊息 1」時打開信匣,才算點開了 k_r_o_w 的新訊息;
+  // 通知還沒跳就先來逛信匣的不記,否則之後的通知 1 會被永久誤擋
+  if (finale.newMailCount === 1) finale.markMailSeen()
   if (finale.coordsSolved) runBeats([200, 600, 1000])
 })
 onUnmounted(() => timers.forEach(clearTimeout))
